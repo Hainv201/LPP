@@ -8,12 +8,13 @@ namespace LPP
 {
     class Predicate : Proposition
     {
-        public char Letter { get; set; }
-        public List<Variable> ObjectVariables { get; set; }
+        private string Letter;
+        public List<Variable> ObjectVariables;
 
-        public Predicate(char letter)
+        public Predicate(string letter):base(letter)
         {
             Letter = letter;
+            ObjectVariables = new List<Variable>();
         }
 
         public override string GetLabel()

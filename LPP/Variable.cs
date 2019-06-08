@@ -2,9 +2,9 @@
 {
     public class Variable : Proposition
     {
-        public char Letter { get; set; }
+        public string Letter { get; set; }
 
-        public Variable(char letter)
+        public Variable(string letter)
         {
             Letter = letter;
         }

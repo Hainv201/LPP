@@ -8,7 +8,7 @@ namespace LPP
 {
     class False : Proposition
     {
-        public False()
+        public False():base()
         {
         }
 

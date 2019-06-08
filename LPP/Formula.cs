@@ -9,10 +9,9 @@ namespace LPP
     public class Formula
     {
         public Proposition RootProposition { get; set; }
-        List<char> listNotations;
-        private bool isPredicate;
-        public List<Variable> Variables { get; private set; }
-        public List<Variable> BoundVariables { get; private set; }
+        List<string> listNotations;
+        public List<Variable> Variables;
+        public List<Variable> BoundVariables;
         public Formula(string inputtedfunction)
         {
             Parsing(inputtedfunction);
@@ -20,125 +19,137 @@ namespace LPP
         }
         private void Parsing(string inputtedfunction)
         {
-            listNotations = new List<char>();
+            listNotations = new List<string>();
             inputtedfunction = inputtedfunction.Replace(" ", "");
+            int predicateIndex = -1;
+            bool IsAfterPredicate = false;
             for (int i = 0; i < inputtedfunction.Length; i++)
             {
-                while (inputtedfunction[i] != '(' && inputtedfunction[i] != ')' && inputtedfunction[i] != ',')
+                string token = "";
+                if (inputtedfunction[i] != '(' && inputtedfunction[i] != ')' && inputtedfunction[i] != ',' && inputtedfunction[i] != '.')
                 {
-                    listNotations.Add(inputtedfunction[i]);
-                    i++;
+                    token += inputtedfunction[i];
+                }
+                else if (inputtedfunction[i] == ')' && IsAfterPredicate)
+                {
+                    IsAfterPredicate = false;
+                }
+                if (predicateIndex != -1 && !IsAfterPredicate)
+                {
+                    int nrPredicateVariables = listNotations.Count - predicateIndex - 1;
+                    listNotations[predicateIndex] = listNotations[predicateIndex] + nrPredicateVariables;
+                    predicateIndex = -1;
+                }
+                if (token !="")
+                {
+                    if (token.Any(char.IsUpper))
+                    {
+                        predicateIndex = listNotations.Count;
+                        IsAfterPredicate = true;
+                    }
+                    listNotations.Add(token);
                 }
             }
         }
         private Proposition CreateTree()
         {
             Variables = new List<Variable>();
-            BoundVariables = new List<Variable>();
-            isPredicate = false;
-            List<Proposition> WaitingProp = new List<Proposition>();
             Proposition currentNode = null;
-            char token = listNotations.First();
-            switch (token)
+            string token = listNotations.First();
+            // 2 operands
+            if (token == "=")
             {
-                // 2 operands
-                case '=':
-                    currentNode = new BiImplication();
-                    listNotations.Remove(token);
-                    currentNode.LeftOperand = CreateTree();
-                    currentNode.RightOperand = CreateTree();
-                    break;
-                case '&':
-                    currentNode = new Conjunction();
-                    listNotations.Remove(token);
-                    currentNode.LeftOperand = CreateTree();
-                    currentNode.RightOperand = CreateTree();
-                    break;
-                case '|':
-                    currentNode = new Disjunction();
-                    listNotations.Remove(token);
-                    currentNode.LeftOperand = CreateTree();
-                    currentNode.RightOperand = CreateTree();
-                    break;
-                case '>':
-                    currentNode = new Implication();
-                    listNotations.Remove(token);
-                    currentNode.LeftOperand = CreateTree();
-                    currentNode.RightOperand = CreateTree();
-                    break;
-                case '%':
-                    currentNode = new NotAnd();
-                    listNotations.Remove(token);
-                    currentNode.LeftOperand = CreateTree();
-                    currentNode.RightOperand = CreateTree();
-                    break;
-                // 1 operand
-                case '~':
-                    currentNode = new Negation();
-                    listNotations.Remove(token);
-                    currentNode.LeftOperand = CreateTree();
-                    break;
-                // No operand
-                case '1':
-                    currentNode = new True();
-                    listNotations.Remove(token);
-                    break;
-                case '0':
-                    currentNode = new False();
-                    listNotations.Remove(token);
-                    break;
-                case char letter when (letter >= 'A' && letter <= 'Z'):
-                    if (isPredicate)
-                    {
-                        currentNode = new Predicate(letter);
-                        while (WaitingProp.Count > 0 && WaitingProp.First() is Variable v)
-                        {
-                            WaitingProp.Remove(WaitingProp.First());
-                            ((Predicate)currentNode).ObjectVariables.Add(v);
-                        }
-                    }
-                    else
-                    {
-                        var variable = GetVariable(letter);
-                        if (variable == null)
-                        {
-                            variable = new Variable(letter);
-                            Variables.Add(variable);
-                        }
-                        stack.Push(variable);
-                    }
-                    break;
-                case char letter when (letter >= 'a' && letter <= 'z'):
-                    isPredicate = true;
-                    var objectVariable = GetVariable(letter);
-                    if (objectVariable == null)
-                    {
-                        objectVariable = new Variable(letter);
-                        Variables.Add(objectVariable);
-                    }
-                    stack.Push(objectVariable);
-                    break;
-                case '@':
-                case '!':
-                    var boundVariables = new List<Variable>();
-                    while (stack.Count > 0 && stack.Peek() is Variable v)
-                    {
-                        stack.Pop();
-                        boundVariables.Add(v);
-                    }
-                    operand = stack.Pop();
-                    if (token == '@')
-                    {
-                        stack.Push(new Universal(operand, boundVariables));
-                    }
-                    else
-                    {
-                        stack.Push(new Existential(operand, boundVariables));
-                    }
-                    BoundVariables = BoundVariables.Union(boundVariables).ToList();
-                    break;
-                default:
-                    throw new InvalidLogicalNotationException("The provided logical notation is invalid.");
+                currentNode = new BiImplication();
+                listNotations.Remove(token);
+                currentNode.LeftOperand = CreateTree();
+                currentNode.RightOperand = CreateTree();
+            }
+            else if (token == "&")
+            {
+                currentNode = new Conjunction();
+                listNotations.Remove(token);
+                currentNode.LeftOperand = CreateTree();
+                currentNode.RightOperand = CreateTree();
+            }
+            else if (token == "|")
+            {
+                currentNode = new Disjunction();
+                listNotations.Remove(token);
+                currentNode.LeftOperand = CreateTree();
+                currentNode.RightOperand = CreateTree();
+            }
+            else if (token == ">")
+            {
+                currentNode = new Implication();
+                listNotations.Remove(token);
+                currentNode.LeftOperand = CreateTree();
+                currentNode.RightOperand = CreateTree();
+            }
+            else if (token == "%")
+            {
+                currentNode = new NotAnd();
+                listNotations.Remove(token);
+                currentNode.LeftOperand = CreateTree();
+                currentNode.RightOperand = CreateTree();
+            }
+            // 1 operand
+            else if (token == "~")
+            {
+                currentNode = new Negation();
+                listNotations.Remove(token);
+                currentNode.LeftOperand = CreateTree();
+            }
+            // No operand
+            else if (token == "1")
+            {
+                currentNode = new True();
+                listNotations.Remove(token);
+            }
+            else if (token == "0")
+            {
+                currentNode = new False();
+                listNotations.Remove(token);
+            }
+            else if (token.Any(char.IsUpper))
+            {
+                currentNode = new Predicate(token[0].ToString());
+                int nrofvariables = Convert.ToInt32(token[1].ToString());
+                listNotations.Remove(token);
+                for (int i = 0; i < nrofvariables; i++)
+                {
+                    Variable v = new Variable(listNotations.First());
+                    ((Predicate)currentNode).ObjectVariables.Add(v);
+                    Variables.Add(v);
+                    listNotations.RemoveAt(0);
+                }
+            }
+            //1 operand
+            else if (token.Contains("@"))
+            {
+                currentNode = new Universal();
+                listNotations.Remove(token);
+                Variable v = new Variable(listNotations.First());
+                ((Universal)currentNode).BoundVariables.Add(v);
+                Variables.Add(v);
+                listNotations.RemoveAt(0);
+                currentNode.LeftOperand = CreateTree();
+            }
+            else if (token.Contains("!"))
+            {
+                Console.WriteLine(token);
+                currentNode = new Existential();
+                listNotations.Remove(token);
+                Variable v = new Variable(listNotations.First());
+                ((Existential)currentNode).BoundVariables.Add(v);
+                Variables.Add(v);
+                listNotations.RemoveAt(0);
+                currentNode.LeftOperand = CreateTree();
+            }
+            // no operand
+            else
+            {
+                currentNode = new Variable(token);
+                listNotations.Remove(token);
             }
             return currentNode;
         }

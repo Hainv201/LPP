@@ -8,7 +8,7 @@ namespace LPP
 {
     class Conjunction : Proposition
     {
-        public Conjunction()
+        public Conjunction():base()
         {
         }
 

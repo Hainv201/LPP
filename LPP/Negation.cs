@@ -8,7 +8,7 @@ namespace LPP
 {
     class Negation : Proposition
     {
-        public Negation()
+        public Negation():base()
         {
         }
 

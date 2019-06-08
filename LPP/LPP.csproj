@@ -49,6 +49,7 @@
     <Compile Include="BiImplication.cs" />
     <Compile Include="Conjunction.cs" />
     <Compile Include="Disjunction.cs" />
+    <Compile Include="Existential.cs" />
     <Compile Include="False.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -58,15 +59,16 @@
     </Compile>
     <Compile Include="Formula.cs" />
     <Compile Include="Implication.cs" />
-    <Compile Include="InvalidLogicalNotationException.cs" />
     <Compile Include="Negation.cs" />
     <Compile Include="NotAnd.cs" />
     <Compile Include="Predicate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proposition.cs" />
+    <Compile Include="Quantifier.cs" />
     <Compile Include="True.cs" />
     <Compile Include="TruthTable.cs" />
+    <Compile Include="Universal.cs" />
     <Compile Include="Variable.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

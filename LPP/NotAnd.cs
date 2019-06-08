@@ -8,7 +8,7 @@ namespace LPP
 {
     class NotAnd : Proposition
     {
-        public NotAnd()
+        public NotAnd():base()
         {
         }
 

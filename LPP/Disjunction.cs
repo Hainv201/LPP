@@ -8,7 +8,7 @@ namespace LPP
 {
     class Disjunction : Proposition
     {
-        public Disjunction()
+        public Disjunction():base()
         {
         }
 

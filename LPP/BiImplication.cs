@@ -8,7 +8,7 @@ namespace LPP
 {
     class BiImplication : Proposition
     {
-        public BiImplication()
+        public BiImplication():base()
         {
         }
 

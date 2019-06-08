@@ -8,7 +8,7 @@ namespace LPP
 {
     class Implication : Proposition
     {
-        public Implication()
+        public Implication():base()
         {
         }
 
