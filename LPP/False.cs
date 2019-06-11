@@ -29,5 +29,10 @@ namespace LPP
         {
             return "False";
         }
+
+        public override Proposition Nandify()
+        {
+            return this;
+        }
     }
 }

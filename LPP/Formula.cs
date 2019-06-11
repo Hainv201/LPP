@@ -10,8 +10,8 @@ namespace LPP
     {
         public Proposition RootProposition { get; set; }
         List<string> listNotations;
-        public List<Variable> Variables;
-        public List<Variable> BoundVariables;
+        public List<Variable> Variables { get; private set; }
+        public List<Variable> BoundVariables { get; private set; }
         public Formula(string inputtedfunction)
         {
             Parsing(inputtedfunction);
@@ -136,7 +136,6 @@ namespace LPP
             }
             else if (token.Contains("!"))
             {
-                Console.WriteLine(token);
                 currentNode = new Existential();
                 listNotations.Remove(token);
                 Variable v = new Variable(listNotations.First());

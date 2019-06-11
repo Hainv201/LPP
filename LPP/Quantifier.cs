@@ -4,9 +4,9 @@ namespace LPP
 {
     abstract class Quantifier : Proposition
     {
-        public List<Variable> BoundVariables;
+        public List<Variable> BoundVariables { get; private set; }
 
-        public Quantifier():base()
+        protected Quantifier():base()
         {
             BoundVariables = new List<Variable>();
         }

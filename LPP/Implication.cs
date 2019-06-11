@@ -36,5 +36,15 @@ namespace LPP
         {
            return $"({LeftOperand.ToString()} > {RightOperand.ToString()})";
         }
+
+        public override Proposition Nandify()
+        {
+            Proposition nand = new NotAnd();
+            nand.LeftOperand = this.LeftOperand.Nandify();
+            nand.RightOperand = new NotAnd();
+            nand.RightOperand.LeftOperand = this.RightOperand.Nandify();
+            nand.RightOperand.RightOperand = this.RightOperand.Nandify();
+            return nand;
+        }
     }
 }

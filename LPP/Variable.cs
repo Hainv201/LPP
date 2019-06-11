@@ -18,5 +18,10 @@
         {
             return Letter.ToString();
         }
+
+        public override Proposition Nandify()
+        {
+            return this;
+        }
     }
 }

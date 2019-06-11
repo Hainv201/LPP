@@ -25,35 +25,36 @@ namespace LPP
             this.RightOperand = null;
         }
         // For Graph
-        //public string CreateGraph(ref int index, int preIndex = 0)
-        //{
-        //    string graph = $"\nnode{index} [ label = \"{GetLabel()}\" ]";
-        //    if (preIndex != 0)
-        //    {
-        //        graph += $"\nnode{preIndex} -- node{index}";
-        //    }
-        //    if (this is Divide || this is Multiply || this is Plus || this is Power || this is Substract)
-        //    {
-        //        int pre = index;
-        //        index++;
-        //        graph += LeftOperand.CreateGraph(ref index, pre);
-        //        graph += RightOperand.CreateGraph(ref index, pre);
-        //        return graph;
-        //    }
-        //    else if (this is Cosine || this is Exp || this is Factorial
-        //        || this is NaturalLogarithm || this is Sine)
-        //    {
-        //        int pre = index;
-        //        index++;
-        //        graph += LeftOperand.CreateGraph(ref index, pre);
-        //        return graph;
-        //    }
-        //    else
-        //    {
-        //        index++;
-        //        return graph;
-        //    }
-        //}
+        public string CreateGraph(ref int index, int preIndex = 0)
+        {
+            string graph = $"\nnode{index} [ label = \"{GetLabel()}\" ]";
+            if (preIndex != 0)
+            {
+                graph += $"\nnode{preIndex} -- node{index}";
+            }
+            //2 operands
+            if (this is BiImplication || this is Conjunction || this is Disjunction || this is Implication || this is NotAnd)
+            {
+                int pre = index;
+                index++;
+                graph += LeftOperand.CreateGraph(ref index, pre);
+                graph += RightOperand.CreateGraph(ref index, pre);
+                return graph;
+            }
+            // 1 operand
+            else if (this is Negation || this is Universal || this is Existential)
+            {
+                int pre = index;
+                index++;
+                graph += LeftOperand.CreateGraph(ref index, pre);
+                return graph;
+            }
+            else
+            {
+                index++;
+                return graph;
+            }
+        }
         public abstract string GetLabel();
         // For Truth Table
         //public TruthTable CreateTruthTable()
@@ -73,6 +74,10 @@ namespace LPP
         //    }
         //    return new TruthTable(Variables, data);
         //}
+        public virtual Proposition Nandify()
+        {
+            return this;
+        }
 
     }
 }

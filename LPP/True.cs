@@ -23,5 +23,10 @@
         {
             return "True";
         }
+
+        public override Proposition Nandify()
+        {
+            return this;
+        }
     }
 }
