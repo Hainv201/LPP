@@ -18,10 +18,7 @@ namespace LPP
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            infix = new Formula(textBox1.Text);
-            textBox2.Text = infix.RootProposition.ToString();
-        }
+
+
     }
 }

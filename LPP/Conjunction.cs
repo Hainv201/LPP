@@ -47,7 +47,7 @@ namespace LPP
             //Right
             nand.RightOperand = new NotAnd();
             nand.RightOperand.LeftOperand = this.LeftOperand.Nandify();
-            nand.RightOperand.RightOperand = this.RightOperand.Nandify();
+            nand.RightOperand.RightOperand = this.RightOperand.Nandify();   
             return nand;
         }
     }

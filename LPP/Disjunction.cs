@@ -9,7 +9,7 @@ namespace LPP
     class Disjunction : Proposition
     {
         public Disjunction():base()
-        {
+        {   
         }
 
         public override string GetLabel()
