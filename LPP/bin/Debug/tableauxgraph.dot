@@ -1,8 +1,6 @@
 graph logic { 
 node [shape=box] 
-node1 [ label = "{(~(!a.P(a) > R))} []"]
-node2 [ label = "{!a.P(a), (~R)} []"]
+node1 [ label = "{(~!x.y)} []"]
+node2 [ label = "{(~!x.y), (~y)} []"]
 node1 -- node2
-node3 [ label = "{(~R), P(a)} [a]"]
-node2 -- node3
 }

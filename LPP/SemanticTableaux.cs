@@ -14,7 +14,7 @@ namespace LPP
         char variable = 'a';
         static bool result;
         List<Variable> Active_Variables;
-
+        static List<Logic> listFormulasProcessedByGamma;
         public SemanticTableaux(List<Logic> parentFormulas, List<Variable> active_Variables)
         {
             this.listFormulas = parentFormulas.Distinct(new LogicComparer()).ToList();
@@ -29,6 +29,7 @@ namespace LPP
 
         public SemanticTableaux(Logic formula)
         {
+            listFormulasProcessedByGamma = new List<Logic>();
             listFormulas = new List<Logic>();
             Active_Variables = new List<Variable>();
             listFormulas.Add(formula);
@@ -351,8 +352,9 @@ namespace LPP
             List<Logic> child_listFormulas;
             foreach (Logic formula in listFormulas)
             {
-                if (formula is Universal universal)
+                if (!listFormulasProcessedByGamma.Contains(formula) && formula is Universal universal)
                 {
+                    listFormulasProcessedByGamma.Add(formula);
                     child_listFormulas = listFormulas.ToList();
                     child_listFormulas.Add(universal.LeftOperand);
                     SemanticTableaux new_semanticTableaux = new SemanticTableaux(child_listFormulas,Active_Variables);
@@ -367,8 +369,9 @@ namespace LPP
                     return true;
 
                 }
-                else if (formula is Negation && formula.LeftOperand is Existential existential)
+                else if (!listFormulasProcessedByGamma.Contains(formula) && formula is Negation && formula.LeftOperand is Existential existential)
                 {
+                    listFormulasProcessedByGamma.Add(formula);
                     child_listFormulas = listFormulas.ToList();
                     Negation negation = new Negation();
                     negation.LeftOperand = existential.LeftOperand;

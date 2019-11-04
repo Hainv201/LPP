@@ -4,7 +4,7 @@ namespace LPP
 {
     abstract class Quantifier : Logic
     {
-        public List<Variable> BoundVariables { get; private set; }
+        public List<Variable> BoundVariables;
 
         protected Quantifier():base()
         {

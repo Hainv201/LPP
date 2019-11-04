@@ -11,9 +11,9 @@ namespace LPP
         public Logic RootProposition { get; set; }
         public bool IsPredicate = false;
         List<string> listNotations;
-        public List<Variable> Variables { get; private set; }
-        public List<Variable> BoundVariables { get; private set; }
-        private List<string> listPredicate;
+        public List<Variable> Variables;
+        public List<Variable> BoundVariables;
+        List<string> listPredicate;
         public Formula(string inputtedfunction)
         {
             listPredicate = new List<string>();

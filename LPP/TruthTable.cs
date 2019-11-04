@@ -6,8 +6,8 @@ namespace LPP
 {
     public class TruthTable
     {
-        public List<Variable> ListVariables { get; private set; }
-        public List<string[]> Data { get; private set; }
+        public List<Variable> ListVariables;
+        public List<string[]> Data;
         public TruthTable(List<Variable> variables, List<string[]> data)
         {
             ListVariables = variables;
