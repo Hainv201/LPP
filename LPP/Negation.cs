@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class Negation : Proposition
+    class Negation : Logic
     {
         public Negation():base()
         {
@@ -34,12 +34,12 @@ namespace LPP
 
         public override string ToString()
         {
-            return $"~{LeftOperand.ToString()}";
+            return $"(~{LeftOperand.ToString()})";
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
-            Proposition nand = new NotAnd();
+            Logic nand = new NotAnd();
             nand.LeftOperand = this.LeftOperand.Nandify();
             nand.RightOperand = this.LeftOperand.Nandify();
             return nand;

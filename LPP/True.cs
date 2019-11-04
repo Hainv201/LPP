@@ -1,6 +1,6 @@
 ﻿namespace LPP
 {
-    class True : Proposition
+    class True : Logic
     {
         public True()
         {
@@ -24,7 +24,7 @@
             return "True";
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
             return this;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class Predicate : Proposition
+    class Predicate : Logic
     {
         private string Letter;
         public List<Variable> ObjectVariables;

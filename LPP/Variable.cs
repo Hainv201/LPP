@@ -1,6 +1,8 @@
-﻿namespace LPP
+﻿using System;
+
+namespace LPP
 {
-    public class Variable : Proposition
+    public class Variable : Logic, IComparable<Variable>
     {
         public string Letter { get; set; }
 
@@ -19,9 +21,13 @@
             return Letter.ToString();
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
             return this;
+        }
+        public int CompareTo(Variable other)
+        {
+            return Letter.CompareTo(other.Letter);
         }
     }
 }

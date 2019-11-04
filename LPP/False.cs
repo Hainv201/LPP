@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class False : Proposition
+    class False : Logic
     {
         public False():base()
         {
@@ -30,7 +30,7 @@ namespace LPP
             return "False";
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
             return this;
         }

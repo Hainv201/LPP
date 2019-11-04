@@ -2,7 +2,7 @@
 
 namespace LPP
 {
-    abstract class Quantifier : Proposition
+    abstract class Quantifier : Logic
     {
         public List<Variable> BoundVariables { get; private set; }
 

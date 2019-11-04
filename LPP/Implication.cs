@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class Implication : Proposition
+    class Implication : Logic
     {
         public Implication():base()
         {
@@ -37,9 +37,9 @@ namespace LPP
            return $"({LeftOperand.ToString()} > {RightOperand.ToString()})";
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
-            Proposition nand = new NotAnd();
+            Logic nand = new NotAnd();
             nand.LeftOperand = this.LeftOperand.Nandify();
             nand.RightOperand = new NotAnd();
             nand.RightOperand.LeftOperand = this.RightOperand.Nandify();

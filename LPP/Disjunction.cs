@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class Disjunction : Proposition
+    class Disjunction : Logic
     {
         public Disjunction():base()
         {   
@@ -37,9 +37,9 @@ namespace LPP
             return $"({LeftOperand.ToString()} | {RightOperand.ToString()})";
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
-            Proposition nand = new NotAnd();
+            Logic nand = new NotAnd();
             nand.LeftOperand = new NotAnd();
             nand.LeftOperand.LeftOperand = this.LeftOperand.Nandify();
             nand.LeftOperand.RightOperand = this.LeftOperand.Nandify();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class BiImplication : Proposition
+    class BiImplication : Logic
     {
         public BiImplication():base()
         {
@@ -37,9 +37,9 @@ namespace LPP
             return $"({LeftOperand.ToString()} = {RightOperand.ToString()})";
         }
 
-        public override Proposition Nandify()
+        public override Logic Nandify()
         {
-            Proposition nand = new NotAnd();
+            Logic nand = new NotAnd();
             //Left
             nand.LeftOperand = new NotAnd();
             nand.LeftOperand.LeftOperand = new NotAnd();

@@ -34,9 +34,11 @@ namespace LPP
                 switch (row[row.Length - 1])
                 {
                     case "0":
-                        zerotable.Add(row); break;
+                        zerotable.Add(row);
+                        break;
                     case "1":
-                        onetable.Add(row); break;
+                        onetable.Add(row);
+                        break;
                 }
             }
             List<string[]> datatable = SimplifyData(zerotable).Concat(SimplifyData(onetable)).ToList();
@@ -51,50 +53,99 @@ namespace LPP
                 bool isSimplifiable = false;
                 for (int j = 0; j < data.Count; j++)
                 {
-                    List<int> diffIndexes = new List<int>();
+                    List<int> different_Indexes = new List<int>();
                     for (int k = 0; k < data[i].Length; k++)
                     {
                         if (data[i][k] != data[j][k])
                         {
-                            diffIndexes.Add(k);
+                            different_Indexes.Add(k);
                         }
                     }
-                    if (diffIndexes.Count == 1)
+                    if (different_Indexes.Count == 1)
                     {
                         string[] simplifiedRow = (string[])data[i].Clone();
-                        simplifiedRow[diffIndexes[0]] = "*";
-                        if (!simplifiedData.Any(simplifiedRow.SequenceEqual)) simplifiedData.Add(simplifiedRow);
+                        simplifiedRow[different_Indexes[0]] = "*";
+                        if (!simplifiedData.Any(simplifiedRow.SequenceEqual))
+                        {
+                            simplifiedData.Add(simplifiedRow);
+                        }
                         isSimplifiable = true;
                     }
                 }
-                if (!isSimplifiable && !simplifiedData.Any(data[i].SequenceEqual)) simplifiedData.Add(data[i]);
+                if (!isSimplifiable && !simplifiedData.Any(data[i].SequenceEqual))
+                {
+                    simplifiedData.Add(data[i]);
+                }
             }
-            if (count < ListVariables.Count) return SimplifyData(simplifiedData, count);
+            if (count < ListVariables.Count)
+            {
+                return SimplifyData(simplifiedData, count);
+            }
             return simplifiedData;
         }
-        // Create Disjunctive Formula
-        public Proposition CreateDisjunctiveFormula()
+
+        //Create Disjunctive Formula
+        public Logic CreateDisjunctiveFormula()
         {
-            Proposition prop = null;
-            for (int i = Data.Count - 1; i >= 0; i--)
+            Logic root = null;
+            for (int i = 0; i< Data.Count; i++)
             {
-                Proposition Disjunc = null; 
+                Logic temporary = null;
                 if (Data[i][Data[i].Length - 1] == "1")
                 {
-                    for (int j = Data[i].Length - 2; j >= 0; j--)
+                    for (int j =0; j< Data[i].Length-1; j++)
                     {
-                        switch (Data[i][j])
+                        if(temporary == null)
                         {
-                            case "0":
-                                stack.Push(new Negation(Variables[j]));
-                                break;
-                            case "1":
-                                stack.Push(Variables[j]);
-                                break;
+                            if (Data[i][j] == "0")
+                            {
+                                temporary = new Negation();
+                                temporary.LeftOperand = ListVariables[j];
+                            }
+                            else if (Data[i][j] == "1")
+                            {
+                                temporary = ListVariables[j];
+                            }
+                        }
+                        else
+                        {
+                            Logic left_Operand = temporary;
+                            Logic right_Operand = null;
+                            if (Data[i][j] == "0")
+                            {
+                                right_Operand = new Negation();
+                                right_Operand.LeftOperand = ListVariables[j];
+                            }
+                            else if (Data[i][j] == "1")
+                            {
+                                right_Operand = ListVariables[j];
+                            }
+                            if(right_Operand != null)
+                            {
+                                temporary = new Conjunction();
+                                temporary.LeftOperand = left_Operand;
+                                temporary.RightOperand = right_Operand;
+                            }
                         }
                     }
                 }
+                if(temporary!= null)
+                {
+                    if(root == null)
+                    {
+                        root = temporary;
+                    }
+                    else
+                    {
+                        Logic Left = root;
+                        Logic Right = temporary;
+                        root = new Disjunction();
+                        root.LeftOperand = Left;
+                        root.RightOperand = Right;
+                    }
+                }
             }
+            return root;
         }
     }
 }

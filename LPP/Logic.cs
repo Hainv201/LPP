@@ -6,20 +6,19 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    public abstract class Proposition
+    public abstract class Logic
     {
-        public Proposition LeftOperand { get; set; }
-        public Proposition RightOperand { get; set; }
-        public List<Variable> Variables;
+        public Logic LeftOperand { get; set; }
+        public Logic RightOperand { get; set; }
         public virtual int TruthValue { get; private set; }
 
-        public Proposition()
+        public Logic()
         {
             this.LeftOperand = null;
             this.RightOperand = null;
         }
         // For Predicate and Variable
-        public Proposition(string letter)
+        public Logic(string letter)
         {
             this.LeftOperand = null;
             this.RightOperand = null;
@@ -57,11 +56,12 @@ namespace LPP
         }
         public abstract string GetLabel();
         // For Truth Table
-        public TruthTable CreateTruthTable()
+        public TruthTable CreateTruthTable(List<Variable> Variables)
         {
             var data = new List<string[]>();
             for (int i = 0; i < (int)Math.Pow(2, Variables.Count); i++)
             {
+                //Get the boolean set for the truth table
                 var values = Convert.ToString(i, 2).PadLeft(Variables.Count, '0').ToCharArray();
                 var row = new string[Variables.Count + 1];
                 for (int j = 0; j < Variables.Count; j++)
@@ -75,10 +75,9 @@ namespace LPP
             return new TruthTable(Variables, data);
         }
         //Nadify
-        public virtual Proposition Nandify()
+        public virtual Logic Nandify()
         {
             return this;
         }
-
     }
 }

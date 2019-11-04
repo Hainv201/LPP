@@ -8,14 +8,21 @@ namespace LPP
 {
     public class Formula
     {
-        public Proposition RootProposition { get; set; }
+        public Logic RootProposition { get; set; }
+        public bool IsPredicate = false;
         List<string> listNotations;
         public List<Variable> Variables { get; private set; }
         public List<Variable> BoundVariables { get; private set; }
+        private List<string> listPredicate;
         public Formula(string inputtedfunction)
         {
+            listPredicate = new List<string>();
+            Variables = new List<Variable>();
+            BoundVariables = new List<Variable>();
             Parsing(inputtedfunction);
             RootProposition = CreateTree();
+            Variables.Sort();
+            BoundVariables.Sort();
         }
         private void Parsing(string inputtedfunction)
         {
@@ -33,6 +40,7 @@ namespace LPP
                 else if (inputtedfunction[i] == ')' && IsAfterPredicate)
                 {
                     IsAfterPredicate = false;
+                    
                 }
                 if (predicateIndex != -1 && !IsAfterPredicate)
                 {
@@ -42,7 +50,7 @@ namespace LPP
                 }
                 if (token !="")
                 {
-                    if (token.Any(char.IsUpper))
+                    if (token.Any(char.IsUpper) && inputtedfunction[i + 1] == '(')
                     {
                         predicateIndex = listNotations.Count;
                         IsAfterPredicate = true;
@@ -51,10 +59,9 @@ namespace LPP
                 }
             }
         }
-        private Proposition CreateTree()
+        private Logic CreateTree()
         {
-            Variables = new List<Variable>();
-            Proposition currentNode = null;
+            Logic currentNode = null;
             string token = listNotations.First();
             // 2 operands
             if (token == "=")
@@ -110,47 +117,108 @@ namespace LPP
                 currentNode = new False();
                 listNotations.Remove(token);
             }
-            else if (token.Any(char.IsUpper))
+            else if (token.Any(char.IsUpper) && token.Length !=1)
             {
+                if (!CheckValidPredicate(token))
+                {
+                    throw new Exception("Invalid Formula!!!");
+                }
+                listPredicate.Add(token);
+                IsPredicate = true;
                 currentNode = new Predicate(token[0].ToString());
                 int nrofvariables = Convert.ToInt32(token[1].ToString());
                 listNotations.Remove(token);
                 for (int i = 0; i < nrofvariables; i++)
                 {
-                    Variable v = new Variable(listNotations.First());
-                    ((Predicate)currentNode).ObjectVariables.Add(v);
-                    Variables.Add(v);
+                    Variable variable = CheckExistVariable(listNotations.First(), Variables);
+                    if (variable == null)
+                    {
+                        variable = new Variable(listNotations.First());
+                        Variables.Add(variable);
+                    }
+                    ((Predicate)currentNode).ObjectVariables.Add(variable);
                     listNotations.RemoveAt(0);
                 }
             }
             //1 operand
             else if (token.Contains("@"))
             {
+                IsPredicate = true;
                 currentNode = new Universal();
                 listNotations.Remove(token);
-                Variable v = new Variable(listNotations.First());
-                ((Universal)currentNode).BoundVariables.Add(v);
-                Variables.Add(v);
+                Variable variable = CheckExistVariable(listNotations.First(), Variables);
+                if (variable == null)
+                {
+                    variable = new Variable(listNotations.First());
+                    Variables.Add(variable);
+                    BoundVariables.Add(variable);
+                }
+                ((Universal)currentNode).BoundVariables.Add(variable);
                 listNotations.RemoveAt(0);
                 currentNode.LeftOperand = CreateTree();
             }
             else if (token.Contains("!"))
             {
+                IsPredicate = true;
                 currentNode = new Existential();
                 listNotations.Remove(token);
-                Variable v = new Variable(listNotations.First());
-                ((Existential)currentNode).BoundVariables.Add(v);
-                Variables.Add(v);
+                Variable variable = CheckExistVariable(listNotations.First(), Variables);
+                if (variable == null)
+                {
+                    variable = new Variable(listNotations.First());
+                    Variables.Add(variable);
+                    BoundVariables.Add(variable);
+                }
+                ((Existential)currentNode).BoundVariables.Add(variable);
                 listNotations.RemoveAt(0);
                 currentNode.LeftOperand = CreateTree();
             }
             // no operand
             else
             {
-                currentNode = new Variable(token);
+                Variable variable = CheckExistVariable(token,Variables);
+                if (variable == null)
+                {
+                    variable = new Variable(token);
+                    Variables.Add(variable);
+                }
+                currentNode = variable;
                 listNotations.Remove(token);
             }
             return currentNode;
+        }
+
+        private Variable CheckExistVariable(string letter, List<Variable> variables)
+        {
+            if (variables.Any())
+            {
+                foreach (Variable variable in variables)
+                {
+                    if (variable.Letter == letter)
+                    {
+                        return variable;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private bool CheckValidPredicate(string predicate)
+        {
+            if (listPredicate.Any())
+            {
+                foreach (string item in listPredicate)
+                {
+                    if(item[0] == predicate[0])
+                    {
+                        if(item[1] != predicate[1])
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 }
