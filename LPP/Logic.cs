@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    [Serializable]
     public abstract class Logic
     {
         public Logic LeftOperand { get; set; }

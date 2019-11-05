@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    [Serializable]
     class Conjunction : Logic
     {
         public Conjunction():base()

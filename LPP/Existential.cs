@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace LPP
 {
+    [Serializable]
     class Existential : Quantifier
     {
         public Existential() : base()

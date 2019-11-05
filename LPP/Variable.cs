@@ -2,6 +2,7 @@
 
 namespace LPP
 {
+    [Serializable]
     public class Variable : Logic, IComparable<Variable>
     {
         public string Letter { get; set; }

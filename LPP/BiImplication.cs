@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    [Serializable]
     class BiImplication : Logic
     {
         public BiImplication():base()

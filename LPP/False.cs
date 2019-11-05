@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    [Serializable]
     class False : Logic
     {
         public False():base()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace LPP
 {
+    [Serializable]
     class Universal:Quantifier
     {
         public Universal() :base()

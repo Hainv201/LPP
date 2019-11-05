@@ -1,5 +1,8 @@
-﻿namespace LPP
+﻿using System;
+
+namespace LPP
 {
+    [Serializable]
     class True : Logic
     {
         public True()
