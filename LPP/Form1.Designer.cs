@@ -56,16 +56,22 @@
             this.graph = new System.Windows.Forms.Button();
             this.read = new System.Windows.Forms.Button();
             this.infix_listBox = new System.Windows.Forms.ListBox();
-            this.listBox6 = new System.Windows.Forms.ListBox();
+            this.Cnf_listBox = new System.Windows.Forms.ListBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cnf_Graph = new System.Windows.Forms.Button();
+            this.David_Putnam = new System.Windows.Forms.Button();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // labelUnboundVariables
             // 
             this.labelUnboundVariables.AutoSize = true;
             this.labelUnboundVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUnboundVariables.Location = new System.Drawing.Point(624, 231);
+            this.labelUnboundVariables.Location = new System.Drawing.Point(622, 236);
             this.labelUnboundVariables.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelUnboundVariables.Name = "labelUnboundVariables";
             this.labelUnboundVariables.Size = new System.Drawing.Size(99, 13);
@@ -76,7 +82,7 @@
             // 
             this.labelBoundVariables.AutoSize = true;
             this.labelBoundVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelBoundVariables.Location = new System.Drawing.Point(624, 81);
+            this.labelBoundVariables.Location = new System.Drawing.Point(622, 109);
             this.labelBoundVariables.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelBoundVariables.Name = "labelBoundVariables";
             this.labelBoundVariables.Size = new System.Drawing.Size(86, 13);
@@ -85,7 +91,7 @@
             // 
             // replace
             // 
-            this.replace.Location = new System.Drawing.Point(754, 350);
+            this.replace.Location = new System.Drawing.Point(761, 363);
             this.replace.Name = "replace";
             this.replace.Size = new System.Drawing.Size(75, 23);
             this.replace.TabIndex = 55;
@@ -95,25 +101,25 @@
             // 
             // textBoxReplaceVariable
             // 
-            this.textBoxReplaceVariable.Location = new System.Drawing.Point(625, 352);
+            this.textBoxReplaceVariable.Location = new System.Drawing.Point(625, 365);
             this.textBoxReplaceVariable.Name = "textBoxReplaceVariable";
-            this.textBoxReplaceVariable.Size = new System.Drawing.Size(100, 20);
+            this.textBoxReplaceVariable.Size = new System.Drawing.Size(130, 20);
             this.textBoxReplaceVariable.TabIndex = 54;
             // 
             // listBoxUnboundVariables
             // 
             this.listBoxUnboundVariables.FormattingEnabled = true;
-            this.listBoxUnboundVariables.Location = new System.Drawing.Point(625, 247);
+            this.listBoxUnboundVariables.Location = new System.Drawing.Point(626, 252);
             this.listBoxUnboundVariables.Name = "listBoxUnboundVariables";
-            this.listBoxUnboundVariables.Size = new System.Drawing.Size(204, 95);
+            this.listBoxUnboundVariables.Size = new System.Drawing.Size(211, 95);
             this.listBoxUnboundVariables.TabIndex = 53;
             // 
             // listBoxBoundVariables
             // 
             this.listBoxBoundVariables.FormattingEnabled = true;
-            this.listBoxBoundVariables.Location = new System.Drawing.Point(625, 97);
+            this.listBoxBoundVariables.Location = new System.Drawing.Point(625, 125);
             this.listBoxBoundVariables.Name = "listBoxBoundVariables";
-            this.listBoxBoundVariables.Size = new System.Drawing.Size(204, 108);
+            this.listBoxBoundVariables.Size = new System.Drawing.Size(211, 108);
             this.listBoxBoundVariables.TabIndex = 52;
             // 
             // btSemanticTableaux
@@ -130,7 +136,7 @@
             // hash_Code
             // 
             this.hash_Code.FormattingEnabled = true;
-            this.hash_Code.Location = new System.Drawing.Point(373, 81);
+            this.hash_Code.Location = new System.Drawing.Point(374, 81);
             this.hash_Code.Name = "hash_Code";
             this.hash_Code.Size = new System.Drawing.Size(246, 95);
             this.hash_Code.TabIndex = 50;
@@ -139,7 +145,7 @@
             // 
             this.dataGridView2.AllowUserToOrderColumns = true;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(379, 404);
+            this.dataGridView2.Location = new System.Drawing.Point(301, 437);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.Size = new System.Drawing.Size(240, 214);
             this.dataGridView2.TabIndex = 49;
@@ -148,7 +154,7 @@
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(15, 404);
+            this.dataGridView1.Location = new System.Drawing.Point(15, 437);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(240, 214);
             this.dataGridView1.TabIndex = 48;
@@ -156,7 +162,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(376, 375);
+            this.label8.Location = new System.Drawing.Point(298, 402);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(81, 13);
             this.label8.TabIndex = 47;
@@ -168,7 +174,7 @@
             this.nand_ListBox.HorizontalScrollbar = true;
             this.nand_ListBox.Location = new System.Drawing.Point(105, 280);
             this.nand_ListBox.Name = "nand_ListBox";
-            this.nand_ListBox.Size = new System.Drawing.Size(514, 43);
+            this.nand_ListBox.Size = new System.Drawing.Size(515, 43);
             this.nand_ListBox.TabIndex = 46;
             // 
             // label7
@@ -183,7 +189,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 376);
+            this.label6.Location = new System.Drawing.Point(12, 402);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(62, 13);
             this.label6.TabIndex = 44;
@@ -195,7 +201,7 @@
             this.disjunc_Simplified.HorizontalScrollbar = true;
             this.disjunc_Simplified.Location = new System.Drawing.Point(105, 231);
             this.disjunc_Simplified.Name = "disjunc_Simplified";
-            this.disjunc_Simplified.Size = new System.Drawing.Size(514, 43);
+            this.disjunc_Simplified.Size = new System.Drawing.Size(515, 43);
             this.disjunc_Simplified.TabIndex = 43;
             // 
             // label5
@@ -213,7 +219,7 @@
             this.disjunc_Normal.HorizontalScrollbar = true;
             this.disjunc_Normal.Location = new System.Drawing.Point(105, 182);
             this.disjunc_Normal.Name = "disjunc_Normal";
-            this.disjunc_Normal.Size = new System.Drawing.Size(514, 43);
+            this.disjunc_Normal.Size = new System.Drawing.Size(515, 43);
             this.disjunc_Normal.TabIndex = 41;
             // 
             // label4
@@ -255,7 +261,7 @@
             // 
             this.inputprefix.Location = new System.Drawing.Point(105, 6);
             this.inputprefix.Name = "inputprefix";
-            this.inputprefix.Size = new System.Drawing.Size(514, 20);
+            this.inputprefix.Size = new System.Drawing.Size(515, 20);
             this.inputprefix.TabIndex = 36;
             // 
             // label1
@@ -313,24 +319,78 @@
             this.infix_listBox.HorizontalScrollbar = true;
             this.infix_listBox.Location = new System.Drawing.Point(105, 32);
             this.infix_listBox.Name = "infix_listBox";
-            this.infix_listBox.Size = new System.Drawing.Size(514, 43);
+            this.infix_listBox.Size = new System.Drawing.Size(515, 43);
             this.infix_listBox.TabIndex = 58;
             // 
-            // listBox6
+            // Cnf_listBox
             // 
-            this.listBox6.FormattingEnabled = true;
-            this.listBox6.HorizontalScrollbar = true;
-            this.listBox6.Location = new System.Drawing.Point(105, 329);
-            this.listBox6.Name = "listBox6";
-            this.listBox6.Size = new System.Drawing.Size(514, 43);
-            this.listBox6.TabIndex = 59;
+            this.Cnf_listBox.FormattingEnabled = true;
+            this.Cnf_listBox.HorizontalScrollbar = true;
+            this.Cnf_listBox.Location = new System.Drawing.Point(105, 329);
+            this.Cnf_listBox.Name = "Cnf_listBox";
+            this.Cnf_listBox.Size = new System.Drawing.Size(515, 56);
+            this.Cnf_listBox.TabIndex = 59;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 338);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(28, 13);
+            this.label9.TabIndex = 60;
+            this.label9.Text = "CNF";
+            // 
+            // cnf_Graph
+            // 
+            this.cnf_Graph.Enabled = false;
+            this.cnf_Graph.Location = new System.Drawing.Point(625, 81);
+            this.cnf_Graph.Name = "cnf_Graph";
+            this.cnf_Graph.Size = new System.Drawing.Size(100, 25);
+            this.cnf_Graph.TabIndex = 62;
+            this.cnf_Graph.Text = "CNF Graph";
+            this.cnf_Graph.UseVisualStyleBackColor = true;
+            this.cnf_Graph.Click += new System.EventHandler(this.cnf_Graph_Click);
+            // 
+            // David_Putnam
+            // 
+            this.David_Putnam.Enabled = false;
+            this.David_Putnam.Location = new System.Drawing.Point(731, 81);
+            this.David_Putnam.Name = "David_Putnam";
+            this.David_Putnam.Size = new System.Drawing.Size(107, 25);
+            this.David_Putnam.TabIndex = 63;
+            this.David_Putnam.Text = "David Putnam";
+            this.David_Putnam.UseVisualStyleBackColor = true;
+            this.David_Putnam.Click += new System.EventHandler(this.David_Putnam_Click);
+            // 
+            // dataGridView3
+            // 
+            this.dataGridView3.AllowUserToOrderColumns = true;
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Location = new System.Drawing.Point(585, 437);
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.Size = new System.Drawing.Size(240, 214);
+            this.dataGridView3.TabIndex = 64;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(582, 402);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(96, 13);
+            this.label10.TabIndex = 65;
+            this.label10.Text = "Appropriate Values";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(850, 630);
-            this.Controls.Add(this.listBox6);
+            this.ClientSize = new System.Drawing.Size(850, 663);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.dataGridView3);
+            this.Controls.Add(this.David_Putnam);
+            this.Controls.Add(this.cnf_Graph);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.Cnf_listBox);
             this.Controls.Add(this.infix_listBox);
             this.Controls.Add(this.labelUnboundVariables);
             this.Controls.Add(this.labelBoundVariables);
@@ -363,6 +423,7 @@
             this.Text = "VH Nguyen - 3206130";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -398,7 +459,12 @@
         private System.Windows.Forms.Button graph;
         private System.Windows.Forms.Button read;
         private System.Windows.Forms.ListBox infix_listBox;
-        private System.Windows.Forms.ListBox listBox6;
+        private System.Windows.Forms.ListBox Cnf_listBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button cnf_Graph;
+        private System.Windows.Forms.Button David_Putnam;
+        private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.Label label10;
     }
 }
 

@@ -27,10 +27,10 @@ namespace LPP
         // For Graph
         public string CreateGraph(ref int index, int preIndex = 0)
         {
-            string graph = $"\nnode{index} [ label = \"{GetLabel()}\" ]";
+            string graph = Environment.NewLine+$"node{index} [label = \"{GetLabel()}\"]";
             if (preIndex != 0)
             {
-                graph += $"\nnode{preIndex} -- node{index}";
+                graph += Environment.NewLine+$"node{preIndex} -- node{index}";
             }
             //2 operands
             if (this is BiImplication || this is Conjunction || this is Disjunction || this is Implication || this is NotAnd)
@@ -77,6 +77,11 @@ namespace LPP
         }
         //Nadify
         public virtual Logic Nandify()
+        {
+            return this;
+        }
+
+        public virtual Logic ConvertToCNF()
         {
             return this;
         }

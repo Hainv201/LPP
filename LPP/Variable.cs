@@ -30,5 +30,10 @@ namespace LPP
         {
             return Letter.CompareTo(other.Letter);
         }
+
+        public override Logic ConvertToCNF()
+        {
+            return this;
+        }
     }
 }

@@ -31,5 +31,10 @@ namespace LPP
         {
             return this;
         }
+
+        public override Logic ConvertToCNF()
+        {
+            return this;
+        }
     }
 }

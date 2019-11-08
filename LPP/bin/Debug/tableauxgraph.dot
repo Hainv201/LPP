@@ -1,10 +1,5 @@
-graph logic { 
-node [shape=box] 
-node1 [ label = "{(~(@q.!p.P(p,q) > !x.@y.P(x,y)))} []"]
-node2 [ label = "{@q.!p.P(p,q), (~!x.@y.P(x,y))} []"]
-node1 -- node2
-node3 [ label = "{@q.!p.P(p,q), (~!x.@y.P(x,y))} []"]
-node2 -- node3
-node4 [ label = "{@q.!p.P(p,q), (~!x.@y.P(x,y))} []"]
-node3 -- node4
-}
+graph tableaux {
+node[shape=box]
+node1 [label = "{(~(~A))} []"]
+node2 [label = "{A} []"]
+node1 -- node2}

@@ -24,10 +24,13 @@ namespace LPP
             Variables.Sort();
             BoundVariables.Sort();
         }
+        public Formula()
+        {
+
+        }
         private void Parsing(string inputtedfunction)
         {
             listNotations = new List<string>();
-            inputtedfunction = inputtedfunction.Replace(" ", "");
             int predicateIndex = -1;
             bool IsAfterPredicate = false;
             for (int i = 0; i < inputtedfunction.Length; i++)

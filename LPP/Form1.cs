@@ -17,6 +17,7 @@ namespace LPP
     public partial class Form1 : Form
     {
         Formula infix;
+        CNF cNF;
         public Form1()
         {
             InitializeComponent();
@@ -28,109 +29,54 @@ namespace LPP
             {
                 ClearForm();
                 List<string> testPrefixAndresults = new List<string>();
-
-                infix = new Formula(inputprefix.Text);
-                infix_listBox.Items.Add(infix.RootProposition);
-                if (!infix.IsPredicate)
+                string input = "";
+                for (int i = 0; i < inputprefix.Lines.Length; i++)
                 {
-                    foreach (Variable variable in infix.Variables)
+                    input += inputprefix.Lines[i];
+                }
+                input = input.Replace(" ", "");
+                if (input[0] == '[')
+                {
+                    cNF = new CNF(input);
+                    infix = new Formula();
+                    infix.RootProposition = cNF.ConvertToLogic();
+                    if (infix.RootProposition != null)
                     {
-                        variables.Items.Add(variable);
-                    }
-                    // Show truth table
-                    TruthTable table = infix.RootProposition.CreateTruthTable(infix.Variables);
-
-                    foreach (Variable variable in table.ListVariables)
-                    {
-                        dataGridView1.Columns.Add(variable.ToString(), variable.ToString());
-                    }
-                    dataGridView1.Columns.Add("R", "R");
-                    foreach (string[] row in table.Data)
-                    {
-                        dataGridView1.Rows.Add(row);
-                    }
-                    foreach (DataGridViewColumn col in dataGridView1.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
-                    }
-                    dataGridView1.Columns[dataGridView1.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-                    // Show simplified truth table
-                    TruthTable simplifiedTable = table.Simplify();
-                    foreach (Variable variable in simplifiedTable.ListVariables)
-                    {
-                        dataGridView2.Columns.Add(variable.ToString(), variable.ToString());
-                    }
-                    dataGridView2.Columns.Add("R", "R");
-                    foreach (string[] row in simplifiedTable.Data)
-                    {
-                        dataGridView2.Rows.Add(row);
-                    }
-
-                    foreach (DataGridViewColumn col in dataGridView2.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
-                    }
-                    dataGridView2.Columns[dataGridView2.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-                    // Hash Code
-                    hash_Code.Items.Add("Infix: " + table.GetTruthTableHashCode());
-
-                    // Show disjunctive normal formula
-                    Logic disjuncNormal = table.CreateDisjunctiveFormula();
-
-                    if (disjuncNormal != null)
-                    {
-                        disjunc_Normal.Items.Add(disjuncNormal);
-                        TruthTable disjunctable = disjuncNormal.CreateTruthTable(infix.Variables);
-                        hash_Code.Items.Add("Disjunc Normal: " + disjunctable.GetTruthTableHashCode());
-                    }
-
-                    // Show disjunctive simplified formula
-                    Logic disjuncSimplified = simplifiedTable.CreateDisjunctiveFormula();
-                    if (disjuncSimplified != null)
-                    {
-                        disjunc_Simplified.Items.Add(disjuncSimplified);
-                        TruthTable disjunc_simplifiedtable = disjuncSimplified.CreateTruthTable(infix.Variables);
-                        hash_Code.Items.Add("Disjunc Simplified: " + disjunc_simplifiedtable.GetTruthTableHashCode());
-                    }
-                    // Show NAND formula
-                    Logic nand = null;
-                    Thread thread = new Thread(() => Nandify(ref nand));
-                    thread.Start();
-
-                    if (!thread.Join(7000))
-                    {
-                        nand = null;
-                        thread.Abort();
-                    }
-                    if (nand!= null)
-                    {
-                        TruthTable nandtable = nand.CreateTruthTable(infix.Variables);
-                        nand_ListBox.Items.Add(nand);
-                        hash_Code.Items.Add("NAND: " + nandtable.GetTruthTableHashCode());
+                        infix_listBox.Items.Add(infix.RootProposition);
+                        infix.Variables = cNF.Cnf_List_Variables;
+                        ShowPropositionFormula();
                     }
                 }
                 else
                 {
-                    // Show bound variables;
-                    foreach (Variable variable in infix.BoundVariables)
+                    infix = new Formula(input);
+                    infix_listBox.Items.Add(infix.RootProposition);
+                    cNF = new CNF(infix.RootProposition.ConvertToCNF());
+                    if (!infix.IsPredicate)
                     {
-                        listBoxBoundVariables.Items.Add(variable);
+                        ShowPropositionFormula();
                     }
-
-                    // Show unbound variables
-                    List<Variable> unboundVariables = infix.Variables.Except(infix.BoundVariables).ToList();
-                    unboundVariables.Sort();
-                    foreach (Variable variable in unboundVariables)
+                    else
                     {
-                        listBoxUnboundVariables.Items.Add(variable);
+                        // Show bound variables;
+                        foreach (Variable variable in infix.BoundVariables)
+                        {
+                            listBoxBoundVariables.Items.Add(variable);
+                        }
+
+                        // Show unbound variables
+                        List<Variable> unboundVariables = infix.Variables.Except(infix.BoundVariables).ToList();
+                        unboundVariables.Sort();
+                        foreach (Variable variable in unboundVariables)
+                        {
+                            listBoxUnboundVariables.Items.Add(variable);
+                        }
                     }
                 }
                 graph.Enabled = true;
                 btSemanticTableaux.Enabled = true;
+                cnf_Graph.Enabled = true;
+                David_Putnam.Enabled = true;
                 //Print TESTED prefix
                 testPrefixAndresults.Add(inputprefix.Text);
                 PrintFormula(testPrefixAndresults);
@@ -147,7 +93,7 @@ namespace LPP
             try
             {
                 int index = 1;
-                string str = "graph logic { \r\nnode [] " + infix.RootProposition.CreateGraph(ref index) + "\r\n}";
+                string str = "graph logic {"+infix.RootProposition.CreateGraph(ref index)+"}";
                 File.WriteAllText(@"graph.dot", str);
 
                 Process dot = new Process();
@@ -194,8 +140,11 @@ namespace LPP
             dataGridView1.Columns.Clear();
             dataGridView2.Rows.Clear();
             dataGridView2.Columns.Clear();
+            dataGridView3.Rows.Clear();
+            dataGridView3.Columns.Clear();
             listBoxBoundVariables.Items.Clear();
             listBoxUnboundVariables.Items.Clear();
+            Cnf_listBox.Items.Clear();
             textBoxReplaceVariable.Text = "";
         }
 
@@ -204,6 +153,8 @@ namespace LPP
             inputprefix.Text = "";
             btSemanticTableaux.Enabled = false;
             graph.Enabled = false;
+            cnf_Graph.Enabled = false;
+            David_Putnam.Enabled = false;
             ClearForm();
         }
 
@@ -225,7 +176,7 @@ namespace LPP
                 {
                     MessageBox.Show("The formula is a tautology!!!");
                 }
-                string str = "graph logic { \r\nnode [shape=box] " + tableaux.CreateGraph(ref index) + "\r\n}";
+                string str = "graph tableaux {"+Environment.NewLine+"node[shape=box]" + tableaux.CreateTableauxTree(ref index) + "}";
                 File.WriteAllText(@"tableauxgraph.dot", str);
 
                 Process dot_process = new Process();
@@ -276,6 +227,142 @@ namespace LPP
                     listBoxUnboundVariables.Items.Add(variable);
                 }
             }
+        }
+
+        private void cnf_Graph_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int index = 1;
+                string str = "graph cnf {"+cNF.CreateCNFGraph(ref index)+ "}";
+                File.WriteAllText(@"cnf.dot", str);
+
+                Process dot = new Process();
+                dot.StartInfo.FileName = @"dot.exe";
+                dot.StartInfo.Arguments = "-Tpng -ographcnf.png cnf.dot";
+                dot.Start();
+                dot.WaitForExit();
+
+                Process.Start(@"graphcnf.png");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void David_Putnam_Click(object sender, EventArgs e)
+        {
+            dataGridView3.Columns.Clear();
+            dataGridView3.Rows.Clear();
+            if (cNF.IsSatisfiable())
+            {
+                cNF.DavisPutnan(cNF);
+                if (!CNF.Has_Janus)
+                {
+                    dataGridView3.Columns.Add("Variable", "Variable");
+                    dataGridView3.Columns.Add("Value", "Value");
+                    foreach (var item in cNF.GetAppropriateValue())
+                    {
+                        dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The proposition formula is not satisfiable!!!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("The proposition formula is not satisfiable!!!");
+            }
+        }
+
+        private void ShowPropositionFormula()
+        {
+            foreach (Variable variable in infix.Variables)
+            {
+                variables.Items.Add(variable);
+            }
+            // Show truth table
+            TruthTable table = infix.RootProposition.CreateTruthTable(infix.Variables);
+
+            foreach (Variable variable in table.ListVariables)
+            {
+                dataGridView1.Columns.Add(variable.ToString(), variable.ToString());
+            }
+            dataGridView1.Columns.Add("R", "R");
+            foreach (string[] row in table.Data)
+            {
+                dataGridView1.Rows.Add(row);
+            }
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            dataGridView1.Columns[dataGridView1.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            // Show simplified truth table
+            TruthTable simplifiedTable = table.Simplify();
+            foreach (Variable variable in simplifiedTable.ListVariables)
+            {
+                dataGridView2.Columns.Add(variable.ToString(), variable.ToString());
+            }
+            dataGridView2.Columns.Add("R", "R");
+            foreach (string[] row in simplifiedTable.Data)
+            {
+                dataGridView2.Rows.Add(row);
+            }
+
+            foreach (DataGridViewColumn col in dataGridView2.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            dataGridView2.Columns[dataGridView2.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            // Hash Code
+            hash_Code.Items.Add("Infix: " + table.GetTruthTableHashCode());
+
+            // Show disjunctive normal formula
+            Logic disjuncNormal = table.CreateDisjunctiveFormula();
+
+            if (disjuncNormal != null)
+            {
+                disjunc_Normal.Items.Add(disjuncNormal);
+                TruthTable disjunctable = disjuncNormal.CreateTruthTable(infix.Variables);
+                hash_Code.Items.Add("Disjunc Normal: " + disjunctable.GetTruthTableHashCode());
+            }
+
+            // Show disjunctive simplified formula
+            Logic disjuncSimplified = simplifiedTable.CreateDisjunctiveFormula();
+            if (disjuncSimplified != null)
+            {
+                disjunc_Simplified.Items.Add(disjuncSimplified);
+                TruthTable disjunc_simplifiedtable = disjuncSimplified.CreateTruthTable(infix.Variables);
+                hash_Code.Items.Add("Disjunc Simplified: " + disjunc_simplifiedtable.GetTruthTableHashCode());
+            }
+
+            // Show NAND formula
+            Logic nand = null;
+            Thread thread = new Thread(() => Nandify(ref nand));
+            thread.Start();
+
+            if (!thread.Join(7000))
+            {
+                nand = null;
+                thread.Abort();
+            }
+            if (nand != null)
+            {
+                TruthTable nandtable = nand.CreateTruthTable(infix.Variables);
+                nand_ListBox.Items.Add(nand);
+                hash_Code.Items.Add("NAND: " + nandtable.GetTruthTableHashCode());
+            }
+
+            //Show CNF
+            Cnf_listBox.Items.Add(cNF.ToString());
         }
     }
 }

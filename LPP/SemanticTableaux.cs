@@ -425,34 +425,34 @@ namespace LPP
             return $"{{{String.Join(", ", listFormulas)}}}";
         }
 
-        public string CreateGraph(ref int index, int preIndex = 0)
+        public string CreateTableauxTree(ref int index, int preIndex = 0)
         {
-            string graph = $"\nnode{index} [ label = \"{ToString()} [{ String.Join(", ", Active_Variables)}]\"]";
+            string graph = Environment.NewLine+$"node{index} [label = \"{ToString()} [{ String.Join(", ", Active_Variables)}]\"]";
             if (preIndex != 0)
             {
-                graph += $"\nnode{preIndex} -- node{index}";
+                graph += Environment.NewLine+$"node{preIndex} -- node{index}";
             }
             if (this.left_Child != null && this.right_Child != null)
             {
                 int pre = index;
                 index++;
-                graph += this.left_Child.CreateGraph(ref index, pre);
-                graph += this.right_Child.CreateGraph(ref index, pre);
+                graph += this.left_Child.CreateTableauxTree(ref index, pre);
+                graph += this.right_Child.CreateTableauxTree(ref index, pre);
                 return graph;
             }
             else if (this.left_Child != null && this.right_Child == null)
             {
                 int pre = index;
                 index++;
-                graph += this.left_Child.CreateGraph(ref index, pre);
+                graph += this.left_Child.CreateTableauxTree(ref index, pre);
                 return graph;
             }
             else if (IsClosed())
             {
                 int pre = index;
                 index++;
-                graph += $"\nnode{index} [ label = \"X\" ]";
-                graph += $"\nnode{pre} -- node{index}";
+                graph += Environment.NewLine+$"node{index} [ label = \"X\" ]";
+                graph += Environment.NewLine+$"node{pre} -- node{index}";
             }
 
             index++;

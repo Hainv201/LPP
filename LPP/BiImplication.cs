@@ -55,5 +55,27 @@ namespace LPP
             nand.RightOperand.RightOperand = this.RightOperand.Nandify();
             return nand;
         }
+
+        public override Logic ConvertToCNF()
+        {
+            Conjunction root = new Conjunction();
+            Disjunction left_disjunction = new Disjunction();
+            Negation left_negation = new Negation();
+            left_negation.LeftOperand = this.RightOperand.ConvertToCNF();
+
+            left_disjunction.LeftOperand = this.LeftOperand.ConvertToCNF();
+            left_disjunction.RightOperand = left_negation.ConvertToCNF();
+
+            Disjunction right_disjunction = new Disjunction();
+            Negation right_negation = new Negation();
+            right_negation.LeftOperand = this.LeftOperand.ConvertToCNF();
+
+            right_disjunction.LeftOperand = right_negation.ConvertToCNF();
+            right_disjunction.RightOperand = this.RightOperand.ConvertToCNF();
+
+            root.LeftOperand = left_disjunction.ConvertToCNF();
+            root.RightOperand = right_disjunction.ConvertToCNF();
+            return root;
+        }
     }
 }

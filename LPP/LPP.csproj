@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BiImplication.cs" />
+    <Compile Include="CNF.cs" />
     <Compile Include="Conjunction.cs" />
     <Compile Include="Disjunction.cs" />
     <Compile Include="Existential.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Formula.cs" />
     <Compile Include="Implication.cs" />
     <Compile Include="LogicComparer.cs" />
+    <Compile Include="MultiAnd.cs" />
+    <Compile Include="MultiOr.cs" />
     <Compile Include="Negation.cs" />
     <Compile Include="NotAnd.cs" />
     <Compile Include="ObjectExtension.cs" />
