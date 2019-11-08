@@ -80,7 +80,12 @@ namespace LPP
             }
             this.LeftOperand = LeftOperand.ConvertToCNF();
             this.RightOperand = RightOperand.ConvertToCNF();
-            return this;
+            if ((this.LeftOperand is Negation || this.LeftOperand is Variable || this.LeftOperand is Disjunction || this.LeftOperand is Conjunction)
+                && (this.RightOperand is Negation || this.RightOperand is Variable || this.RightOperand is Disjunction || this.RightOperand is Conjunction))
+            {
+                return this;
+            }
+            return this.ConvertToCNF();
         }
     }
 }

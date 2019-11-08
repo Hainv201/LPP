@@ -64,6 +64,7 @@
     <Compile Include="LogicComparer.cs" />
     <Compile Include="MultiAnd.cs" />
     <Compile Include="MultiOr.cs" />
+    <Compile Include="MultiOrComparer.cs" />
     <Compile Include="Negation.cs" />
     <Compile Include="NotAnd.cs" />
     <Compile Include="ObjectExtension.cs" />

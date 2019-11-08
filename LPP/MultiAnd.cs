@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    [Serializable]
     class MultiAnd
     {
         public List<Logic> MultiAnd_ListLogics;
@@ -24,13 +23,15 @@ namespace LPP
             }
             ListMultiOrs = new List<MultiOr>(multiOrs);
         }
-        public MultiAnd(Logic logic)
+        public MultiAnd(Logic logic, List<Variable> variables)
         {
             MultiAnd_ListLogics = new List<Logic>();
             MultiAnd_ListLogics.Add(logic);
             ListMultiOrs = new List<MultiOr>();
             InterpretLogic();
+            ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
             MultiAnd_ListLogics = MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
+            AddVariable(variables);
         }
         public override string ToString()
         {
@@ -115,6 +116,7 @@ namespace LPP
 
         private void InterpretLogic()
         {
+            MultiAnd_ListLogics = MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
             for (int i = 0; i < MultiAnd_ListLogics.Count; i++)
             {
                 Logic logic = MultiAnd_ListLogics[i];
@@ -133,6 +135,69 @@ namespace LPP
                     InterpretLogic();
                 }
             }
+        }
+
+        private void AddVariable(List<Variable> variables)
+        {
+            foreach (Logic logic in MultiAnd_ListLogics)
+            {
+                if (logic is Variable v1)
+                {
+                    Variable variable = CheckExistVariable(v1.Letter, variables);
+                    if (variable == null)
+                    {
+                        variable = v1;
+                        variables.Add(variable);
+                    }
+                }
+                if (logic is Negation && logic.LeftOperand is Variable v2)
+                {
+                    Variable variable = CheckExistVariable(v2.Letter, variables);
+                    if (variable == null)
+                    {
+                        variable = v2;
+                        variables.Add(variable);
+                    }
+                }
+            }
+            foreach (MultiOr multiOr in ListMultiOrs)
+            {
+                foreach (Logic logic in multiOr.MultiOr_ListLogics)
+                {
+                    if (logic is Variable v3)
+                    {
+                        Variable variable = CheckExistVariable(v3.Letter, variables);
+                        if (variable == null)
+                        {
+                            variable = v3;
+                            variables.Add(variable);
+                        }
+                    }
+                    if (logic is Negation && logic.LeftOperand is Variable v4)
+                    {
+                        Variable variable = CheckExistVariable(v4.Letter, variables);
+                        if (variable == null)
+                        {
+                            variable = v4;
+                            variables.Add(variable);
+                        }
+                    }
+                }
+            }
+        }
+        private Variable CheckExistVariable(string letter, List<Variable> variables)
+        {
+            if (variables.Any())
+            {
+                foreach (Variable variable in variables)
+                {
+                    if (variable.Letter == letter)
+                    {
+                        return variable;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

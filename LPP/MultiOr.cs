@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    [Serializable]
     class MultiOr
     {
         public List<Logic> MultiOr_ListLogics;
@@ -90,6 +89,7 @@ namespace LPP
 
         private void InterpretInputLogic()
         {
+            MultiOr_ListLogics = MultiOr_ListLogics.Distinct(new LogicComparer()).ToList();
             for (int i = 0; i < MultiOr_ListLogics.Count; i++)
             {
                 Logic logic = MultiOr_ListLogics[i];

@@ -51,7 +51,6 @@ namespace LPP
                 {
                     infix = new Formula(input);
                     infix_listBox.Items.Add(infix.RootProposition);
-                    cNF = new CNF(infix.RootProposition.ConvertToCNF());
                     if (!infix.IsPredicate)
                     {
                         ShowPropositionFormula();
@@ -349,7 +348,7 @@ namespace LPP
             Thread thread = new Thread(() => Nandify(ref nand));
             thread.Start();
 
-            if (!thread.Join(7000))
+            if (!thread.Join(11000))
             {
                 nand = null;
                 thread.Abort();
@@ -362,7 +361,25 @@ namespace LPP
             }
 
             //Show CNF
-            Cnf_listBox.Items.Add(cNF.ToString());
+            cNF = null;
+            Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
+            thread2.Start();
+
+            if (!thread2.Join(11000))
+            {
+                cNF = null;
+                thread2.Abort();
+            }
+            if (cNF != null)
+            {
+                Cnf_listBox.Items.Add(cNF.ToString());
+            }
         }
+
+        private void ConvertCNF(ref CNF cnf)
+        {
+            cnf = new CNF(infix.RootProposition.ConvertToCNF());
+        }
+
     }
 }

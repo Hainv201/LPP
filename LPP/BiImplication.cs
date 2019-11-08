@@ -61,21 +61,21 @@ namespace LPP
             Conjunction root = new Conjunction();
             Disjunction left_disjunction = new Disjunction();
             Negation left_negation = new Negation();
-            left_negation.LeftOperand = this.RightOperand.ConvertToCNF();
+            left_negation.LeftOperand = this.RightOperand;
 
-            left_disjunction.LeftOperand = this.LeftOperand.ConvertToCNF();
-            left_disjunction.RightOperand = left_negation.ConvertToCNF();
+            left_disjunction.LeftOperand = this.LeftOperand;
+            left_disjunction.RightOperand = left_negation;
 
             Disjunction right_disjunction = new Disjunction();
             Negation right_negation = new Negation();
-            right_negation.LeftOperand = this.LeftOperand.ConvertToCNF();
+            right_negation.LeftOperand = this.LeftOperand;
 
-            right_disjunction.LeftOperand = right_negation.ConvertToCNF();
-            right_disjunction.RightOperand = this.RightOperand.ConvertToCNF();
+            right_disjunction.LeftOperand = right_negation;
+            right_disjunction.RightOperand = this.RightOperand;
 
-            root.LeftOperand = left_disjunction.ConvertToCNF();
-            root.RightOperand = right_disjunction.ConvertToCNF();
-            return root;
+            root.LeftOperand = left_disjunction;
+            root.RightOperand = right_disjunction;
+            return root.ConvertToCNF();
         }
     }
 }

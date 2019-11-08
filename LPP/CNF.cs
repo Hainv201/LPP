@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    [Serializable]
     class CNF
     {
         public static bool Has_Janus;
@@ -28,10 +27,10 @@ namespace LPP
 
         public CNF(Logic logic)
         {
-            topLayer = new MultiAnd(logic);
             Has_Janus = false;
             Cnf_List_Variables = new List<Variable>();
             appropriate_Values = new Dictionary<string, bool>();
+            topLayer = new MultiAnd(logic,Cnf_List_Variables);
         }
 
         private void ParseInput(string input)
@@ -250,7 +249,7 @@ namespace LPP
 
         private CNF Resolution(CNF cnf, string v)
         {
-            CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cnf);
+            CNF clone_cnf = cnf;
             List<string> lower = new List<string>();
             List<string> upper = new List<string>();
             foreach (MultiOr multiOr in clone_cnf.topLayer.ListMultiOrs)
@@ -301,9 +300,16 @@ namespace LPP
                     }
                 }
             }
-            clone_cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v));
-            clone_cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v));
+            if (v.All(char.IsUpper))
+            {
+                clone_cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v));
+            }
+            else
+            {
+                clone_cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v.ToUpper()));
+            }
             clone_cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.ToLower()));
+            clone_cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v));
             List<string> newMultiAnd_String = new List<string>();
             foreach (string a in upper)
             {

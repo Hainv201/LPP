@@ -53,11 +53,11 @@ namespace LPP
             Disjunction root = new Disjunction();
 
             Negation left_negation = new Negation();
-            left_negation.LeftOperand = this.LeftOperand.ConvertToCNF();
+            left_negation.LeftOperand = this.LeftOperand;
 
-            root.LeftOperand = left_negation.ConvertToCNF();
-            root.RightOperand = RightOperand.ConvertToCNF();
-            return root;
+            root.LeftOperand = left_negation;
+            root.RightOperand = RightOperand;
+            return root.ConvertToCNF();
         }
     }
 }
