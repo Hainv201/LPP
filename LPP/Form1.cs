@@ -39,6 +39,7 @@ namespace LPP
                 {
                     cNF = new CNF(input);
                     infix = new Formula();
+                    //Convert CNF to Logic
                     infix.RootProposition = cNF.ConvertToLogic();
                     if (infix.RootProposition != null)
                     {
@@ -46,6 +47,8 @@ namespace LPP
                         infix.Variables = cNF.Cnf_List_Variables;
                         ShowPropositionFormula();
                     }
+                    //Show CNF
+                    Cnf_listBox.Items.Add(cNF.ToString());
                 }
                 else
                 {
@@ -54,6 +57,20 @@ namespace LPP
                     if (!infix.IsPredicate)
                     {
                         ShowPropositionFormula();
+                        //Show CNF
+                        cNF = null;
+                        Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
+                        thread2.Start();
+
+                        if (!thread2.Join(11000))
+                        {
+                            cNF = null;
+                            thread2.Abort();
+                        }
+                        if (cNF != null)
+                        {
+                            Cnf_listBox.Items.Add(cNF.ToString());
+                        }
                     }
                     else
                     {
@@ -359,23 +376,9 @@ namespace LPP
                 nand_ListBox.Items.Add(nand);
                 hash_Code.Items.Add("NAND: " + nandtable.GetTruthTableHashCode());
             }
-
-            //Show CNF
-            cNF = null;
-            Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
-            thread2.Start();
-
-            if (!thread2.Join(11000))
-            {
-                cNF = null;
-                thread2.Abort();
-            }
-            if (cNF != null)
-            {
-                Cnf_listBox.Items.Add(cNF.ToString());
-            }
         }
 
+        // Convert Proposition formula to CNF
         private void ConvertCNF(ref CNF cnf)
         {
             cnf = new CNF(infix.RootProposition.ConvertToCNF());

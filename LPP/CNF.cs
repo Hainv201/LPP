@@ -33,6 +33,7 @@ namespace LPP
             topLayer = new MultiAnd(logic,Cnf_List_Variables);
         }
 
+        //Parse Input in [aB,c] form
         private void ParseInput(string input)
         {
             bool Read = false;
@@ -162,6 +163,8 @@ namespace LPP
         {
             return topLayer.ToString();
         }
+        
+        //Convert CNF to Logic
         public Logic ConvertToLogic()
         {
             Logic logic = this.topLayer.CovertToLogic();
@@ -173,19 +176,19 @@ namespace LPP
             Cnf_List_Variables.Sort();
             cnf = cnf.RemoveUseless(cnf);
             Variable variable = cnf.Cnf_List_Variables.First();
-            SolveNonJanus(cnf, variable);
+            cnf.SolveNonJanus(cnf, variable);
             if (cnf.ToString().Contains(variable.Letter))
             {
-                cnf = Resolution(cnf, variable.Letter);
+                cnf = cnf.Resolution(cnf, variable.Letter);
             }
             if (cnf.ToString().Contains(variable.Letter.ToLower()))
             {
-                cnf = Resolution(cnf, variable.Letter.ToLower());
+                cnf = cnf.Resolution(cnf, variable.Letter.ToLower());
             }
             cnf.Cnf_List_Variables.Remove(variable);
             if (cnf.Cnf_List_Variables.Count != 0 && !Has_Janus)
             {
-                DavisPutnan(cnf);
+                cnf.DavisPutnan(cnf);
             }
         }
 
@@ -201,14 +204,14 @@ namespace LPP
             {
                 Has_Janus = true;
             }
-            if (CheckVaribleExistInsideNegation(cnf.topLayer.MultiAnd_ListLogics,v) == 1)
+            if (cnf.CheckVaribleExistInsideNegation(cnf.topLayer.MultiAnd_ListLogics,v) == 1)
             {
                 if (!appropriate_Values.ContainsKey(v.Letter))
                 {
                     appropriate_Values.Add(v.Letter, true);
                 }
             }
-            if (CheckVaribleExistInsideNegation(cnf.topLayer.MultiAnd_ListLogics, v) == 2)
+            if (cnf.CheckVaribleExistInsideNegation(cnf.topLayer.MultiAnd_ListLogics, v) == 2)
             {
                 if (!appropriate_Values.ContainsKey(v.Letter.ToLower()))
                 {
@@ -249,10 +252,10 @@ namespace LPP
 
         private CNF Resolution(CNF cnf, string v)
         {
-            CNF clone_cnf = cnf;
             List<string> lower = new List<string>();
             List<string> upper = new List<string>();
-            foreach (MultiOr multiOr in clone_cnf.topLayer.ListMultiOrs)
+            //Get All MultiOrs contain the Variable
+            foreach (MultiOr multiOr in cnf.topLayer.ListMultiOrs)
             {
                 if (v.All(char.IsUpper))
                 {
@@ -277,7 +280,8 @@ namespace LPP
                     }
                 }
             }
-            foreach (Logic logic in clone_cnf.topLayer.MultiAnd_ListLogics)
+            //Get All Logics contain the Variable
+            foreach (Logic logic in cnf.topLayer.MultiAnd_ListLogics)
             {
                 if (v.All(char.IsUpper))
                 {
@@ -300,16 +304,19 @@ namespace LPP
                     }
                 }
             }
+            // Remove all logics contain the variable
             if (v.All(char.IsUpper))
             {
-                clone_cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v));
+                cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v));
             }
             else
             {
-                clone_cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v.ToUpper()));
+                cnf.topLayer.MultiAnd_ListLogics.RemoveAll(x => x.ToString().Contains(v.ToUpper()));
             }
-            clone_cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.ToLower()));
-            clone_cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v));
+            //remove all multiors contain the variable
+            cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.ToLower()));
+            cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v));
+            //Resolution
             List<string> newMultiAnd_String = new List<string>();
             foreach (string a in upper)
             {
@@ -318,20 +325,12 @@ namespace LPP
                     newMultiAnd_String.Add(new String((a + b).Distinct().ToArray()));
                 }
             }
+            //remove all empty strings
             newMultiAnd_String.RemoveAll(x=>x =="");
-            for (int i = 0; i < newMultiAnd_String.Count; i++)
-            {
-                for (int j = i + 1; j < newMultiAnd_String.Count; j++)
-                {
-                    if (SameChar(newMultiAnd_String[i], newMultiAnd_String[j]))
-                    {
-                        newMultiAnd_String.Remove(newMultiAnd_String[j]);
-                    }
-                }
-            }
-            CreateCNFTree(newMultiAnd_String, clone_cnf.topLayer.ListMultiOrs,clone_cnf.topLayer.MultiAnd_ListLogics);
-            clone_cnf.topLayer.MultiAnd_ListLogics = clone_cnf.topLayer.MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
-            return clone_cnf;
+            cnf.CreateCNFTree(newMultiAnd_String, cnf.topLayer.ListMultiOrs,cnf.topLayer.MultiAnd_ListLogics);
+            cnf.topLayer.MultiAnd_ListLogics = cnf.topLayer.MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
+            cnf.topLayer.ListMultiOrs = cnf.topLayer.ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
+            return cnf;
         }
 
         public bool IsSatisfiable()
@@ -342,15 +341,6 @@ namespace LPP
         public Dictionary<string,bool> GetAppropriateValue()
         {
             return appropriate_Values;
-        }
-
-        private bool SameChar(string firstString, string secondString)
-        {
-            char[] first = firstString.ToCharArray();
-            char[] second = secondString.ToCharArray();
-            Array.Sort(first);
-            Array.Sort(second);
-            return first.SequenceEqual(second);
         }
 
         private int CheckVaribleExistInsideNegation(List<Logic> logics, Variable variable)

@@ -48,6 +48,7 @@ namespace LPP
 
         public override Logic ConvertToCNF()
         {
+            this.LeftOperand = this.LeftOperand.ConvertToCNF();
             if (this.LeftOperand is Disjunction d)
             {
                 Conjunction root = new Conjunction();
@@ -60,7 +61,7 @@ namespace LPP
                 root.RightOperand = right_negation;
                 return root.ConvertToCNF();
             }
-            else if (this.LeftOperand is Conjunction c)
+            if (this.LeftOperand is Conjunction c)
             {
                 Disjunction root = new Disjunction();
 
@@ -74,31 +75,18 @@ namespace LPP
 
                 return root.ConvertToCNF();
             }
-            else if (this.LeftOperand is NotAnd notAnd)
+            if (this.LeftOperand is NotAnd notAnd)
             {
                 Conjunction root = new Conjunction();
                 root.LeftOperand = notAnd.LeftOperand;
                 root.RightOperand = notAnd.RightOperand;
                 return root.ConvertToCNF();
             }
-            else if (this.LeftOperand is Negation negation)
+            if (this.LeftOperand is Negation negation)
             {
-                return negation.LeftOperand.ConvertToCNF();
+                return negation.LeftOperand;
             }
-            else if (this.LeftOperand is True)
-            {
-                return new False();
-            }
-            else if (this.LeftOperand is False)
-            {
-                return new True();
-            }
-            this.LeftOperand = LeftOperand.ConvertToCNF();
-            if (this.LeftOperand is Variable)
-            {
-                return this;
-            }
-            return this.ConvertToCNF();
+            return this;
         }
     }
 }

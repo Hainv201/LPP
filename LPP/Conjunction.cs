@@ -54,38 +54,9 @@ namespace LPP
 
         public override Logic ConvertToCNF()
         {
-            if (this.LeftOperand is True)
-            {
-                return this.RightOperand.ConvertToCNF();
-            }
-            else if (this.RightOperand is True)
-            {
-                return this.LeftOperand.ConvertToCNF();
-            }
-            else if (this.LeftOperand is False || this.RightOperand is False)
-            {
-                return new False();
-            }
-            else if (new LogicComparer().Equals(this.LeftOperand,this.RightOperand))
-            {
-                return this.LeftOperand.ConvertToCNF();
-            }
-            else if (this.LeftOperand is Negation && new LogicComparer().Equals(this.LeftOperand.LeftOperand, this.RightOperand))
-            {
-                return new False();
-            }
-            else if (this.RightOperand is Negation && new LogicComparer().Equals(this.RightOperand.LeftOperand,this.LeftOperand))
-            {
-                return new False();
-            }
-            this.LeftOperand = LeftOperand.ConvertToCNF();
-            this.RightOperand = RightOperand.ConvertToCNF();
-            if ((this.LeftOperand is Negation || this.LeftOperand is Variable || this.LeftOperand is Disjunction || this.LeftOperand is Conjunction)
-                && (this.RightOperand is Negation || this.RightOperand is Variable || this.RightOperand is Disjunction || this.RightOperand is Conjunction))
-            {
-                return this;
-            }
-            return this.ConvertToCNF();
+            this.LeftOperand = this.LeftOperand.ConvertToCNF();
+            this.RightOperand = this.RightOperand.ConvertToCNF();
+            return this;
         }
     }
 }

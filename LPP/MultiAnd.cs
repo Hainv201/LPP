@@ -116,6 +116,7 @@ namespace LPP
 
         private void InterpretLogic()
         {
+            ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
             MultiAnd_ListLogics = MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
             for (int i = 0; i < MultiAnd_ListLogics.Count; i++)
             {
