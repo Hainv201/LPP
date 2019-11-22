@@ -62,7 +62,7 @@ namespace LPP
                         Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
                         thread2.Start();
 
-                        if (!thread2.Join(11000))
+                        if (!thread2.Join(35000))
                         {
                             cNF = null;
                             thread2.Abort();
@@ -273,7 +273,8 @@ namespace LPP
             dataGridView3.Rows.Clear();
             if (cNF.IsSatisfiable())
             {
-                cNF.DavisPutnan(cNF);
+                CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
+                cNF.DavisPutnan(clone_cnf);
                 if (!CNF.Has_Janus)
                 {
                     dataGridView3.Columns.Add("Variable", "Variable");
@@ -283,10 +284,7 @@ namespace LPP
                         dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("The proposition formula is not satisfiable!!!");
-                }
+                MessageBox.Show(cNF.ShowStep(),"Algorithm:");
             }
             else
             {
@@ -381,7 +379,11 @@ namespace LPP
         // Convert Proposition formula to CNF
         private void ConvertCNF(ref CNF cnf)
         {
-            cnf = new CNF(infix.RootProposition.ConvertToCNF());
+            Logic logic = infix.RootProposition.ConvertToCNF();
+            logic = logic.ApplyDistributiveLaw();
+            cnf = new CNF(logic);
+            cnf.Cnf_List_Variables = infix.Variables;
+            cnf.GetCNF();
         }
 
     }

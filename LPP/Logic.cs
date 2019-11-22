@@ -85,5 +85,15 @@ namespace LPP
         {
             return this;
         }
+
+        public virtual Logic ApplyDistributiveLaw()
+        {
+            return this;
+        }
+
+        public virtual Logic Simplify()
+        {
+            return this;
+        }
     }
 }

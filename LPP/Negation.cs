@@ -84,7 +84,20 @@ namespace LPP
             }
             if (this.LeftOperand is Negation negation)
             {
-                return negation.LeftOperand;
+                return negation.LeftOperand.ConvertToCNF();
+            }
+            return this.Simplify();
+        }
+
+        public override Logic Simplify()
+        {
+            if (this.LeftOperand is True)
+            {
+                return new False();
+            }
+            if (this.LeftOperand is False)
+            {
+                return new True();
             }
             return this;
         }

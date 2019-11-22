@@ -49,11 +49,46 @@ namespace LPP
             nand.RightOperand.RightOperand = this.RightOperand.Nandify();
             return nand;
         }
-
+        public override Logic Simplify()
+        {
+            LogicComparer logicComparer = new LogicComparer();
+            if (this.LeftOperand is False)
+            {
+                return this.RightOperand.Simplify();
+            }
+            if (this.RightOperand is False)
+            {
+                return this.LeftOperand.Simplify();
+            }
+            if (this.LeftOperand is True || this.RightOperand is True)
+            {
+                return new True();
+            }
+            if (logicComparer.Equals(this.LeftOperand, this.RightOperand))
+            {
+                return this.LeftOperand.Simplify();
+            }
+            if (this.LeftOperand is Negation && logicComparer.Equals(this.LeftOperand.LeftOperand, this.RightOperand))
+            {
+                return new True();
+            }
+            if (this.RightOperand is Negation && logicComparer.Equals(this.RightOperand.LeftOperand, this.LeftOperand))
+            {
+                return new True();
+            }
+            return this;
+        }
         public override Logic ConvertToCNF()
         {
             this.LeftOperand = this.LeftOperand.ConvertToCNF();
             this.RightOperand = this.RightOperand.ConvertToCNF();
+            return this.Simplify();
+        }
+
+        public override Logic ApplyDistributiveLaw()
+        {
+            this.LeftOperand = this.LeftOperand.ApplyDistributiveLaw();
+            this.RightOperand = this.RightOperand.ApplyDistributiveLaw();
             if (this.LeftOperand is Conjunction conj)
             {
                 Conjunction root = new Conjunction();
@@ -67,7 +102,7 @@ namespace LPP
 
                 root.LeftOperand = d1;
                 root.RightOperand = d2;
-                return root.ConvertToCNF();
+                return root.ApplyDistributiveLaw();
             }
             if (this.RightOperand is Conjunction conj1)
             {
@@ -82,9 +117,9 @@ namespace LPP
 
                 root.LeftOperand = d1;
                 root.RightOperand = d2;
-                return root.ConvertToCNF();
+                return root.ApplyDistributiveLaw();
             }
-            return this;
+            return this.Simplify();
         }
     }
 }

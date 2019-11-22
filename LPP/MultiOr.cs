@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    [Serializable]
     class MultiOr
     {
         public List<Logic> MultiOr_ListLogics;
@@ -21,8 +22,6 @@ namespace LPP
         {
             MultiOr_ListLogics = new List<Logic>();
             MultiOr_ListLogics.Add(logic);
-            InterpretInputLogic();
-            MultiOr_ListLogics = MultiOr_ListLogics.Distinct(new LogicComparer()).ToList();
         }
         public override string ToString()
         {
@@ -66,6 +65,7 @@ namespace LPP
             }
             return logic;
         }
+
         
         private Logic CreateTree(Logic logic, List<Logic> logics, int i)
         {
@@ -85,6 +85,13 @@ namespace LPP
                 }
             }
             return logic;
+        }
+
+        // Get CNF Form
+        public void GetCNF()
+        {
+            InterpretInputLogic();
+            MultiOr_ListLogics = MultiOr_ListLogics.Distinct(new LogicComparer()).ToList();
         }
 
         private void InterpretInputLogic()
