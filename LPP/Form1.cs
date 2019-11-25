@@ -271,25 +271,23 @@ namespace LPP
         {
             dataGridView3.Columns.Clear();
             dataGridView3.Rows.Clear();
-            if (cNF.IsSatisfiable())
+            CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
+            cNF.DavisPutnan(clone_cnf);
+            if (!CNF.Has_Janus)
             {
-                CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
-                cNF.DavisPutnan(clone_cnf);
-                if (!CNF.Has_Janus)
+                dataGridView3.Columns.Add("Variable", "Variable");
+                dataGridView3.Columns.Add("Value", "Value");
+                foreach (var item in cNF.GetAppropriateValue())
                 {
-                    dataGridView3.Columns.Add("Variable", "Variable");
-                    dataGridView3.Columns.Add("Value", "Value");
-                    foreach (var item in cNF.GetAppropriateValue())
-                    {
-                        dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
-                    }
+                    dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
                 }
-                MessageBox.Show(cNF.ShowStep(),"Algorithm:");
             }
             else
             {
                 MessageBox.Show("The proposition formula is not satisfiable!!!");
             }
+            MessageBox.Show(cNF.ShowStep(), "Algorithm:");
+
         }
 
         private void ShowPropositionFormula()
@@ -383,7 +381,6 @@ namespace LPP
             logic = logic.ApplyDistributiveLaw();
             cnf = new CNF(logic);
             cnf.Cnf_List_Variables = infix.Variables;
-            cnf.GetCNF();
         }
 
     }

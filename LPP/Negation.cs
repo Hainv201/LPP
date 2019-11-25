@@ -61,7 +61,7 @@ namespace LPP
                 root.RightOperand = right_negation;
                 return root.ConvertToCNF();
             }
-            if (this.LeftOperand is Conjunction c)
+            else if (this.LeftOperand is Conjunction c)
             {
                 Disjunction root = new Disjunction();
 
@@ -75,14 +75,14 @@ namespace LPP
 
                 return root.ConvertToCNF();
             }
-            if (this.LeftOperand is NotAnd notAnd)
+            else if (this.LeftOperand is NotAnd notAnd)
             {
                 Conjunction root = new Conjunction();
                 root.LeftOperand = notAnd.LeftOperand;
                 root.RightOperand = notAnd.RightOperand;
                 return root.ConvertToCNF();
             }
-            if (this.LeftOperand is Negation negation)
+            else if (this.LeftOperand is Negation negation)
             {
                 return negation.LeftOperand.ConvertToCNF();
             }
@@ -95,7 +95,7 @@ namespace LPP
             {
                 return new False();
             }
-            if (this.LeftOperand is False)
+            else if (this.LeftOperand is False)
             {
                 return new True();
             }

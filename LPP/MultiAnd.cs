@@ -9,15 +9,9 @@ namespace LPP
     [Serializable]
     class MultiAnd
     {
-        public List<Logic> MultiAnd_ListLogics;
         public List<MultiOr> ListMultiOrs;
-        public MultiAnd(List<Logic> logics, List<MultiOr> multiOrs)
+        public MultiAnd(List<MultiOr> multiOrs)
         {
-            if (logics == null)
-            {
-                MultiAnd_ListLogics = new List<Logic>();
-            }
-            MultiAnd_ListLogics = new List<Logic>(logics);
             if (multiOrs == null)
             {
                 ListMultiOrs = new List<MultiOr>();
@@ -26,35 +20,20 @@ namespace LPP
         }
         public MultiAnd(Logic logic)
         {
-            MultiAnd_ListLogics = new List<Logic>();
-            MultiAnd_ListLogics.Add(logic);
             ListMultiOrs = new List<MultiOr>();
+            List<Logic> Temp_List = new List<Logic>();
+            Temp_List.Add(logic);
+            InterpretLogic(Temp_List);
+            ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
         }
         public override string ToString()
         {
-            string toString = "[";
-            foreach (Logic logic in MultiAnd_ListLogics)
-            {
-                if (logic is Negation && logic.LeftOperand is Variable v)
-                {
-                    toString += v.Letter.ToLower();
-                }
-                else if (logic is Variable v1)
-                {
-                    toString += v1.Letter;
-                }
-                toString += ",";
-            }
-            if (ListMultiOrs.Count == 0 && MultiAnd_ListLogics.Count!=0)
-            {
-                toString = toString.Remove(toString.Length - 1);
-            }
-            return toString+ String.Join(",", ListMultiOrs) + "]";
+            return "[" + String.Join(",", ListMultiOrs) + "]";
         }
         public Logic CovertToLogic()
         {
             Logic logic = null;
-            List<Logic> logics = new List<Logic>(MultiAnd_ListLogics);
+            List<Logic> logics = new List<Logic>();
             foreach (MultiOr multiOr in ListMultiOrs)
             {
                 logics.Add(multiOr.CovertToLogic());
@@ -90,56 +69,26 @@ namespace LPP
             return logic;
         }
 
-        public bool IsExist_A_and_NotA()
-        {
-            foreach (Logic A in MultiAnd_ListLogics)
-            {
-                if (A is Variable a)
-                {
-                    foreach (Logic B in MultiAnd_ListLogics)
-                    {
-                        if (B is Negation && B.LeftOperand is Variable b)
-                        {
-                            if (a.Letter == b.Letter)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        // Get CNF Form
-        public void GetCNF(List<Variable> variables)
-        {
-            InterpretLogic();
-            ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
-            MultiAnd_ListLogics = MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
-        }
-
-        private void InterpretLogic()
+        private void InterpretLogic(List<Logic> logics)
         {
             ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
-            MultiAnd_ListLogics = MultiAnd_ListLogics.Distinct(new LogicComparer()).ToList();
-            for (int i = 0; i < MultiAnd_ListLogics.Count; i++)
+            while(logics.Count != 0)
             {
-                Logic logic = MultiAnd_ListLogics[i];
+                Logic logic = logics.First();
                 if (logic is Conjunction conjunction)
                 {
-                    MultiAnd_ListLogics.Add(conjunction.LeftOperand);
-                    MultiAnd_ListLogics.Add(conjunction.RightOperand);
-                    MultiAnd_ListLogics.Remove(logic);
-                    InterpretLogic();
+                    logics.Add(conjunction.LeftOperand);
+                    logics.Add(conjunction.RightOperand);
+                    logics.Remove(logic);
+                    InterpretLogic(logics);
                 }
-                if (logic is Disjunction disjunction)
+                else
                 {
                     MultiOr multiOr = new MultiOr(logic);
                     multiOr.GetCNF();
                     ListMultiOrs.Add(multiOr);
-                    MultiAnd_ListLogics.Remove(logic);
-                    InterpretLogic();
+                    logics.Remove(logic);
+                    InterpretLogic(logics);
                 }
             }
         }

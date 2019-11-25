@@ -59,25 +59,17 @@ namespace LPP
             {
                 return this.RightOperand.Simplify();
             }
-            if (this.RightOperand is True)
+            else if (this.RightOperand is True)
             {
                 return this.LeftOperand.Simplify();
             }
-            if (this.LeftOperand is False || this.RightOperand is False)
+            else if (this.LeftOperand is False || this.RightOperand is False)
             {
                 return new False();
             }
-            if (logicComparer.Equals(this.LeftOperand, this.RightOperand))
+            else if (logicComparer.Equals(this.LeftOperand, this.RightOperand))
             {
                 return this.LeftOperand.Simplify();
-            }
-            if (this.LeftOperand is Negation && logicComparer.Equals(this.LeftOperand.LeftOperand, this.RightOperand))
-            {
-                return new False();
-            }
-            if (this.RightOperand is Negation && logicComparer.Equals(this.RightOperand.LeftOperand, this.LeftOperand))
-            {
-                return new False();
             }
             return this;
         }

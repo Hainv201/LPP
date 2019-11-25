@@ -63,6 +63,10 @@ namespace LPP
             {
                 logic = CreateTree(logic, MultiOr_ListLogics, 0);
             }
+            else
+            {
+                logic = MultiOr_ListLogics.First();
+            }
             return logic;
         }
 
