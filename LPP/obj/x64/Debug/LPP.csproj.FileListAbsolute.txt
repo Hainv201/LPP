@@ -1,0 +1,9 @@
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\bin\x64\Debug\LPP.exe.config
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\bin\x64\Debug\LPP.exe
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\bin\x64\Debug\LPP.pdb
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\x64\Debug\LPP.Form1.resources
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\x64\Debug\LPP.Properties.Resources.resources
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\x64\Debug\LPP.csproj.GenerateResource.cache
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\x64\Debug\LPP.csproj.CoreCompileInputs.cache
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\x64\Debug\LPP.exe
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\x64\Debug\LPP.pdb

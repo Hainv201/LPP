@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LPP
 {
     [Serializable]
-    class Negation : Logic
+    public class Negation : Logic
     {
         public Negation():base()
         {

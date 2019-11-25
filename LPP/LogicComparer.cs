@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class LogicComparer : IEqualityComparer<Logic>
+    public class LogicComparer : IEqualityComparer<Logic>
     {
         public bool Equals(Logic x, Logic y)
         {

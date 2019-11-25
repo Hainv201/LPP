@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace LPP
 {
     [Serializable]
-    abstract class Quantifier : Logic
+    public abstract class Quantifier : Logic
     {
         public List<Variable> BoundVariables;
 

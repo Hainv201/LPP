@@ -3,7 +3,7 @@
 namespace LPP
 {
     [Serializable]
-    class True : Logic
+    public class True : Logic
     {
         public True()
         {

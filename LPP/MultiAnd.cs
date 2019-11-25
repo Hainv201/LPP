@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LPP
 {
     [Serializable]
-    class MultiAnd
+    public class MultiAnd
     {
         public List<MultiOr> ListMultiOrs;
         public MultiAnd(List<MultiOr> multiOrs)

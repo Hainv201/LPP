@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LPP
 {
     [Serializable]
-    class Implication : Logic
+    public class Implication : Logic
     {
         public Implication():base()
         {

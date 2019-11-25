@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LPP
 {
     [Serializable]
-    class MultiOr
+    public class MultiOr
     {
         public List<Logic> MultiOr_ListLogics;
         public MultiOr(List<Logic> logics)
@@ -35,6 +35,10 @@ namespace LPP
                 else if (logic is Variable v1)
                 {
                     toString += v1.Letter;
+                }
+                else
+                {
+                    toString += logic.ToString();
                 }
             }
             return toString;

@@ -18,3 +18,5 @@ C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\Debug\LPP.csproj.CoreCompileInpu
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\Debug\LPP.exe
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\Debug\LPP.pdb
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\obj\Debug\LPP.csprojAssemblyReference.cache
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\bin\Debug\LPP.exe.CodeAnalysisLog.xml
+C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP\bin\Debug\LPP.exe.lastcodeanalysissucceeded

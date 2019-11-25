@@ -43,6 +43,7 @@ namespace LPP
                     infix.RootProposition = cNF.ConvertToLogic();
                     if (infix.RootProposition != null)
                     {
+                        Console.WriteLine(infix.RootProposition);
                         infix_listBox.Items.Add(infix.RootProposition);
                         infix.Variables = cNF.Cnf_List_Variables;
                         ShowPropositionFormula();
@@ -62,7 +63,7 @@ namespace LPP
                         Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
                         thread2.Start();
 
-                        if (!thread2.Join(35000))
+                        if (!thread2.Join(55000))
                         {
                             cNF = null;
                             thread2.Abort();
@@ -273,7 +274,7 @@ namespace LPP
             dataGridView3.Rows.Clear();
             CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
             cNF.DavisPutnan(clone_cnf);
-            if (!CNF.Has_Janus)
+            if (!cNF.GetHasJanusValue())
             {
                 dataGridView3.Columns.Add("Variable", "Variable");
                 dataGridView3.Columns.Add("Value", "Value");

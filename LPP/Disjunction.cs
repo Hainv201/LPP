@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LPP
 {
     [Serializable]
-    class Disjunction : Logic
+    public class Disjunction : Logic
     {
         public Disjunction():base()
         {   

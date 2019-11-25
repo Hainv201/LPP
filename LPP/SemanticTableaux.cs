@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class SemanticTableaux
+    public class SemanticTableaux
     {
         List<Logic> listFormulas;
         SemanticTableaux left_Child;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
-    class MultiOrComparer: IEqualityComparer<MultiOr>
+    public class MultiOrComparer: IEqualityComparer<MultiOr>
     {
         public bool Equals(MultiOr x, MultiOr y)
         {

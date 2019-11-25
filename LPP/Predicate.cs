@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LPP
 {
     [Serializable]
-    class Predicate : Logic
+    public class Predicate : Logic
     {
         private string Letter;
         public List<Variable> ObjectVariables;
