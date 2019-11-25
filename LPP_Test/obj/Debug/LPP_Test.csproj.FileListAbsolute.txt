@@ -15,5 +15,3 @@ C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.csproj.CoreC
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.csproj.CopyComplete
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.dll
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.pdb
-C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\bin\Debug\LPP_Test.dll.CodeAnalysisLog.xml
-C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\bin\Debug\LPP_Test.dll.lastcodeanalysissucceeded

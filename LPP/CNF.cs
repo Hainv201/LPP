@@ -206,7 +206,7 @@ namespace LPP
                 if (!appropriate_Values.ContainsKey(v.Letter))
                 {
                     appropriate_Values.Add(v.Letter, true);
-                    step += $"Solve Non Janus[{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
+                    step += $"Solve Non Janus [{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
                 }
             }
             else if (cnf.topLayer.ListMultiOrs.Exists(x => x.ToString() == v.Letter.ToLower()))
@@ -214,7 +214,7 @@ namespace LPP
                 if (!appropriate_Values.ContainsKey(v.Letter.ToLower()))
                 {
                     appropriate_Values.Add(v.Letter.ToLower(), false);
-                    step += $"Solve Non Janus[{count}] on {v}: {v} = False, {cnf}" + Environment.NewLine;
+                    step += $"Solve Non Janus [{count}] on {v}: {v} = False, {cnf}" + Environment.NewLine;
                 }
             }
             else if (multiorString.Contains(v.Letter) && multiorString.Contains(v.Letter.ToLower()))
@@ -223,9 +223,9 @@ namespace LPP
                 {
                     appropriate_Values.Add(v.Letter, true);
                     appropriate_Values.Add(v.Letter.ToLower(), false);
-                    step += $"Solve Non Janus[{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
+                    step += $"Solve Non Janus [{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
                     sub_step += $"Substitute Solution [{count}] [{v.Letter.ToLower()}]" + Environment.NewLine;
-                    sub_step += $"Solve Non Janus[{count}]: {v} = False" + Environment.NewLine;
+                    sub_step += $"Solve Non Janus [{count}]: {v} = False" + Environment.NewLine;
                 }
             }
             else if (multiorString.ToString().Contains(v.Letter) && !multiorString.ToString().Contains(v.Letter.ToLower()))
@@ -233,7 +233,7 @@ namespace LPP
                 if (!appropriate_Values.ContainsKey(v.Letter))
                 {
                     appropriate_Values.Add(v.Letter, true);
-                    step += $"Solve Non Janus[{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
+                    step += $"Solve Non Janus [{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
                 }
             }
             else if (!multiorString.ToString().Contains(v.Letter) && multiorString.ToString().Contains(v.Letter.ToLower()))
@@ -241,7 +241,7 @@ namespace LPP
                 if (!appropriate_Values.ContainsKey(v.Letter.ToLower()))
                 {
                     appropriate_Values.Add(v.Letter.ToLower(), false);
-                    step += $"Solve Non Janus[{count}] on {v}: {v} = False, {cnf}" + Environment.NewLine;
+                    step += $"Solve Non Janus [{count}] on {v}: {v} = False, {cnf}" + Environment.NewLine;
                 }
             }
             else if ((cnf.ToString() == "[]" || cnf.ToString() == "[True]") && !Has_Janus)
@@ -249,7 +249,7 @@ namespace LPP
                 if (!appropriate_Values.ContainsKey(v.Letter))
                 {
                     appropriate_Values.Add(v.Letter, true);
-                    step += $"Solve Non Janus[{count}] on {v}: {cnf}" + Environment.NewLine;
+                    step += $"Solve Non Janus [{count}] on {v}: {cnf}" + Environment.NewLine;
                     step += $"Resolution on {v}: {cnf}" + Environment.NewLine;
                     step += $"Choose {v} = True" + Environment.NewLine;
                 }
@@ -334,6 +334,13 @@ namespace LPP
             string final_step = step + sub_step;
             if (Has_Janus)
             {
+                step = step.Replace(" True, ", "");
+                step = step.Replace(" False, ", "");
+                while (step.Contains("="))
+                {
+                    int index = step.IndexOf('=');
+                    step = step.Remove(index - 2, 3);
+                }
                 string result = step;
                 step = "";
                 sub_step = "";

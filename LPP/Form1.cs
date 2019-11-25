@@ -43,7 +43,6 @@ namespace LPP
                     infix.RootProposition = cNF.ConvertToLogic();
                     if (infix.RootProposition != null)
                     {
-                        Console.WriteLine(infix.RootProposition);
                         infix_listBox.Items.Add(infix.RootProposition);
                         infix.Variables = cNF.Cnf_List_Variables;
                         ShowPropositionFormula();

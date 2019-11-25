@@ -3381,3 +3381,17 @@ P(x,y)
 
 ~(&(>(A,&(>(>(|(C,C),&(C,|(C,=(B,A)))),|(|(C,C),A)),=(>(B,B),A))),>(~(>(B,A)),|(B,B))))
 
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
+[A,AC,acd,AD,af,AFa,AFf,CD,Fa,Ff]
+
