@@ -49,6 +49,8 @@ namespace LPP
                     }
                     //Show CNF
                     Cnf_listBox.Items.Add(cNF.ToString());
+                    cnf_Graph.Enabled = true;
+                    David_Putnam.Enabled = true;
                 }
                 else
                 {
@@ -71,9 +73,13 @@ namespace LPP
                         {
                             Cnf_listBox.Items.Add(cNF.ToString());
                         }
+                        cnf_Graph.Enabled = true;
+                        David_Putnam.Enabled = true;
                     }
                     else
                     {
+                        cnf_Graph.Enabled = false;
+                        David_Putnam.Enabled = false;
                         // Show bound variables;
                         foreach (Variable variable in infix.BoundVariables)
                         {
@@ -91,8 +97,6 @@ namespace LPP
                 }
                 graph.Enabled = true;
                 btSemanticTableaux.Enabled = true;
-                cnf_Graph.Enabled = true;
-                David_Putnam.Enabled = true;
                 //Print TESTED prefix
                 testPrefixAndresults.Add(inputprefix.Text);
                 PrintFormula(testPrefixAndresults);
@@ -377,7 +381,8 @@ namespace LPP
         // Convert Proposition formula to CNF
         private void ConvertCNF(ref CNF cnf)
         {
-            Logic logic = infix.RootProposition.ConvertToCNF();
+            Logic clone_root = ObjectExtension.CopyObject<Logic>(infix.RootProposition);
+            Logic logic = clone_root.ConvertToCNF();
             logic = logic.ApplyDistributiveLaw();
             cnf = new CNF(logic);
             cnf.Cnf_List_Variables = infix.Variables;

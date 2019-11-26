@@ -265,7 +265,7 @@ namespace LPP
             }
             cnf.CreateCNFTree(newMultiAnd_String, cnf.topLayer.ListMultiOrs);
             cnf.topLayer.ListMultiOrs = cnf.topLayer.ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
-            if (cnf.Cnf_List_Variables.Count >= 1)
+            if (cnf.Cnf_List_Variables.Count >= 1 && cnf.ToString() != "[]" && cnf.ToString() != "[True]")
             {
                 step += $"Resolution [{count}] on {v}: {cnf}" + Environment.NewLine;
             }

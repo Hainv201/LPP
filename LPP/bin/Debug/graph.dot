@@ -1,60 +1,14 @@
 graph logic {
-node1 [label = "&"]
-node2 [label = "|"]
+node1 [label = ">"]
+node2 [label = "!x"]
 node1 -- node2
-node3 [label = "C"]
+node3 [label = "@y"]
 node2 -- node3
-node4 [label = "|"]
-node2 -- node4
-node5 [label = "D"]
-node4 -- node5
-node6 [label = "~"]
-node4 -- node6
-node7 [label = "C"]
-node6 -- node7
-node8 [label = "&"]
-node1 -- node8
-node9 [label = "|"]
-node8 -- node9
-node10 [label = "C"]
-node9 -- node10
-node11 [label = "|"]
-node9 -- node11
-node12 [label = "D"]
-node11 -- node12
-node13 [label = "E"]
-node11 -- node13
-node14 [label = "&"]
-node8 -- node14
-node15 [label = "|"]
-node14 -- node15
-node16 [label = "C"]
-node15 -- node16
-node17 [label = "|"]
-node15 -- node17
-node18 [label = "D"]
-node17 -- node18
-node19 [label = "|"]
-node17 -- node19
-node20 [label = "E"]
-node19 -- node20
-node21 [label = "~"]
-node19 -- node21
-node22 [label = "A"]
-node21 -- node22
-node23 [label = "&"]
-node14 -- node23
-node24 [label = "D"]
-node23 -- node24
-node25 [label = "&"]
-node23 -- node25
-node26 [label = "|"]
-node25 -- node26
-node27 [label = "E"]
-node26 -- node27
-node28 [label = "~"]
-node26 -- node28
-node29 [label = "F"]
-node28 -- node29
-node30 [label = "F"]
-node25 -- node30}
+node4 [label = "P(x,y)"]
+node3 -- node4
+node5 [label = "@q"]
+node1 -- node5
+node6 [label = "!p"]
+node5 -- node6
+node7 [label = "P(p,q)"]
+node6 -- node7}
