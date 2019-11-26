@@ -113,7 +113,7 @@ namespace LPP
             try
             {
                 int index = 1;
-                string str = "graph logic {"+infix.RootProposition.CreateGraph(ref index)+"}";
+                string str = "graph logic {" + infix.RootProposition.CreateGraph(ref index) + Environment.NewLine + "}";
                 File.WriteAllText(@"graph.dot", str);
 
                 Process dot = new Process();
@@ -196,7 +196,7 @@ namespace LPP
                 {
                     MessageBox.Show("The formula is a tautology!!!");
                 }
-                string str = "graph tableaux {"+Environment.NewLine+"node[shape=box]" + tableaux.CreateTableauxTree(ref index) + "}";
+                string str = "graph tableaux {" + Environment.NewLine + "node[shape=box]" + tableaux.CreateTableauxTree(ref index) + Environment.NewLine + "}";
                 File.WriteAllText(@"tableauxgraph.dot", str);
 
                 Process dot_process = new Process();
@@ -254,7 +254,7 @@ namespace LPP
             try
             {
                 int index = 1;
-                string str = "graph cnf {"+cNF.CreateCNFGraph(ref index)+ "}";
+                string str = "graph cnf {" + cNF.CreateCNFGraph(ref index) + Environment.NewLine + "}";
                 File.WriteAllText(@"cnf.dot", str);
 
                 Process dot = new Process();

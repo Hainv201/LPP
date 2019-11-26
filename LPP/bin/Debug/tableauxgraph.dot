@@ -34,4 +34,5 @@ node15 -- node16
 node17 [label = "{(~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), ((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))), (~A), C} []"]
 node14 -- node17
 node18 [ label = "X" ]
-node17 -- node18}
+node17 -- node18
+}
