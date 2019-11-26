@@ -54,8 +54,20 @@ namespace LPP_Test
             string test = "[D,CaA,Cab,CBA,CBb]";
             CNF cnf = new CNF(test);
             cnf = cnf.RemoveUseless(cnf);
-            cnf = cnf.Resolution(cnf, "A");
+            Variable v = cnf.Cnf_List_Variables[0];
+            cnf = cnf.Resolution(cnf, v);
             Assert.AreEqual("[D,CBb]", cnf.ToString());
+        }
+
+        [TestMethod]
+        public void Test_SolveNonJanus()
+        {
+            string test = "[A,CdD,Cdb,CBA,CBb]";
+            CNF cnf = new CNF(test);
+            cnf = cnf.RemoveUseless(cnf);
+            Variable v = cnf.Cnf_List_Variables[0];
+            cnf = cnf.SolveNonJanus(cnf, v);
+            Assert.AreEqual("[Cdb]", cnf.ToString());
         }
 
         [TestMethod]

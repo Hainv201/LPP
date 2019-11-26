@@ -21,7 +21,7 @@ namespace LPP
         //Constructor for the string input [Abc]
         public CNF(string input)
         {
-            count = 0;
+            count = 1;
             step = "";
             sub_step = "";
             Has_Janus = false;
@@ -37,7 +37,7 @@ namespace LPP
         // Constructor for a logic
         public CNF(Logic logic)
         {
-            count = 0;
+            count = 1;
             step = "";
             sub_step = "";
             Has_Janus = false;
@@ -176,15 +176,9 @@ namespace LPP
             clone_cnf = clone_cnf.RemoveUseless(clone_cnf);
             step += $"Remove Useless [{count}]: {clone_cnf}" + Environment.NewLine;
             Variable variable = clone_cnf.Cnf_List_Variables.First();
-            if (clone_cnf.topLayer.ListMultiOrs.Exists(x => x.ToString() == variable.Letter) 
-                && clone_cnf.topLayer.ListMultiOrs.Exists(x => x.ToString() == variable.Letter.ToLower())
-                && clone_cnf.Cnf_List_Variables.Count >1)
-            {
-                variable = clone_cnf.Cnf_List_Variables[1];
-            }
-            clone_cnf.SolveNonJanus(clone_cnf, variable);
-            clone_cnf = ApplyResolution(clone_cnf, variable);
+            clone_cnf = clone_cnf.SolveNonJanus(clone_cnf, variable);
             clone_cnf.Cnf_List_Variables.Remove(variable);
+            clone_cnf = Resolution(clone_cnf, variable);
             count++;
             if (clone_cnf.Cnf_List_Variables.Count != 0 && !Has_Janus)
             {
@@ -198,32 +192,15 @@ namespace LPP
             return cnf;
         }
 
-        public void SolveNonJanus(CNF cnf, Variable v)
+        public CNF SolveNonJanus(CNF cnf, Variable v)
         {
             string multiorString = String.Join("", cnf.topLayer.ListMultiOrs);
-            if (cnf.topLayer.ListMultiOrs.Exists(x => x.ToString() == v.Letter))
-            {
-                if (!appropriate_Values.ContainsKey(v.Letter))
-                {
-                    appropriate_Values.Add(v.Letter, true);
-                    step += $"Solve Non Janus [{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
-                }
-            }
-            else if (cnf.topLayer.ListMultiOrs.Exists(x => x.ToString() == v.Letter.ToLower()))
-            {
-                if (!appropriate_Values.ContainsKey(v.Letter.ToLower()))
-                {
-                    appropriate_Values.Add(v.Letter.ToLower(), false);
-                    step += $"Solve Non Janus [{count}] on {v}: {v} = False, {cnf}" + Environment.NewLine;
-                }
-            }
-            else if (multiorString.Contains(v.Letter) && multiorString.Contains(v.Letter.ToLower()))
+            if (multiorString.Contains(v.Letter) && multiorString.Contains(v.Letter.ToLower()))
             {
                 if (!appropriate_Values.ContainsKey(v.Letter) && !appropriate_Values.ContainsKey(v.Letter.ToLower()))
                 {
-                    appropriate_Values.Add(v.Letter, true);
-                    appropriate_Values.Add(v.Letter.ToLower(), false);
-                    step += $"Solve Non Janus [{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
+                    appropriate_Values.Add(v.Letter, false);
+                    step += $"Solve Non Janus [{count}] on {v}: {cnf}" + Environment.NewLine;
                     sub_step += $"Substitute Solution [{count}] [{v.Letter.ToLower()}]" + Environment.NewLine;
                     sub_step += $"Solve Non Janus [{count}]: {v} = False" + Environment.NewLine;
                 }
@@ -233,6 +210,7 @@ namespace LPP
                 if (!appropriate_Values.ContainsKey(v.Letter))
                 {
                     appropriate_Values.Add(v.Letter, true);
+                    cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.Letter));
                     step += $"Solve Non Janus [{count}] on {v}: {v} = True, {cnf}" + Environment.NewLine;
                 }
             }
@@ -240,69 +218,36 @@ namespace LPP
             {
                 if (!appropriate_Values.ContainsKey(v.Letter.ToLower()))
                 {
-                    appropriate_Values.Add(v.Letter.ToLower(), false);
+                    appropriate_Values.Add(v.Letter, false);
+                    cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.Letter.ToLower()));
                     step += $"Solve Non Janus [{count}] on {v}: {v} = False, {cnf}" + Environment.NewLine;
                 }
             }
             else if ((cnf.ToString() == "[]" || cnf.ToString() == "[True]") && !Has_Janus)
             {
-                if (!appropriate_Values.ContainsKey(v.Letter))
-                {
-                    appropriate_Values.Add(v.Letter, true);
-                    step += $"Solve Non Janus [{count}] on {v}: {cnf}" + Environment.NewLine;
-                    step += $"Resolution on {v}: {cnf}" + Environment.NewLine;
-                    step += $"Choose {v} = True" + Environment.NewLine;
-                }
-            }
-        }
-
-        public CNF ApplyResolution(CNF cnf, Variable variable)
-        {
-            if (cnf.ToString().Contains(variable.Letter) && !Has_Janus)
-            {
-                cnf = cnf.Resolution(cnf, variable.Letter);
-            }
-            else if (cnf.ToString().Contains(variable.Letter.ToLower()) && !Has_Janus)
-            {
-                cnf = cnf.Resolution(cnf, variable.Letter.ToLower());
+                step += $"Solve Non Janus [{count}] on {v}: {cnf}" + Environment.NewLine;
             }
             return cnf;
         }
 
-        public CNF Resolution(CNF cnf, string v)
+        public CNF Resolution(CNF cnf, Variable v)
         {
-            CNF clone = ObjectExtension.CopyObject<CNF>(cnf);
             List<string> lower = new List<string>();
             List<string> upper = new List<string>();
             //Get All MultiOrs contain the Variable
             foreach (MultiOr multiOr in cnf.topLayer.ListMultiOrs)
             {
-                if (v.All(char.IsUpper))
+                if (multiOr.ToString().Contains(v.Letter))
                 {
-                    if (multiOr.ToString().Contains(v))
-                    {
-                        upper.Add(multiOr.ToString().Replace(v, ""));
-                    }
-                    if (multiOr.ToString().Contains(v.ToLower()))
-                    {
-                        lower.Add(multiOr.ToString().Replace(v.ToLower(), ""));
-                    }
+                    upper.Add(multiOr.ToString().Replace(v.Letter, ""));
                 }
-                else
+                if (multiOr.ToString().Contains(v.Letter.ToLower()))
                 {
-                    if (multiOr.ToString().Contains(v))
-                    {
-                        lower.Add(multiOr.ToString().Replace(v, ""));
-                    }
-                    if (multiOr.ToString().Contains(v.ToUpper()))
-                    {
-                        upper.Add(multiOr.ToString().Replace(v.ToUpper(), ""));
-                    }
+                    lower.Add(multiOr.ToString().Replace(v.Letter.ToLower(), ""));
                 }
             }
-            //remove all multiors contain the variable
-            cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v));
-            cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.ToLower()));
+            cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.Letter));
+            cnf.topLayer.ListMultiOrs.RemoveAll(x => x.ToString().Contains(v.Letter.ToLower()));
             //Resolution
             List<string> newMultiAnd_String = new List<string>();
             foreach (string a in upper)
@@ -316,11 +261,23 @@ namespace LPP
             {
                 Has_Janus = true;
                 step += $"Has Janus: UNSAT" + Environment.NewLine;
-                return clone;
+                return cnf;
             }
             cnf.CreateCNFTree(newMultiAnd_String, cnf.topLayer.ListMultiOrs);
             cnf.topLayer.ListMultiOrs = cnf.topLayer.ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
-            step += $"Resolution [{count}] on {v.ToUpper()}: {cnf}" + Environment.NewLine;
+            if (cnf.Cnf_List_Variables.Count >= 1)
+            {
+                step += $"Resolution [{count}] on {v}: {cnf}" + Environment.NewLine;
+            }
+            if (cnf.ToString() == "[]" || cnf.ToString() == "[True]" )
+            {
+                if (!appropriate_Values.ContainsKey(v.Letter))
+                {
+                    step += $"Resolution [{count}] on {v}: {cnf}" + Environment.NewLine;
+                    appropriate_Values.Add(v.Letter, true);
+                    step += $"Choose {v} = True" + Environment.NewLine;
+                }
+            }
             return cnf;
         }
 
@@ -334,24 +291,17 @@ namespace LPP
             string final_step = step + sub_step;
             if (Has_Janus)
             {
-                step = step.Replace(" True, ", "");
-                step = step.Replace(" False, ", "");
-                while (step.Contains("="))
-                {
-                    int index = step.IndexOf('=');
-                    step = step.Remove(index - 2, 3);
-                }
                 string result = step;
                 step = "";
                 sub_step = "";
-                count = 0;
+                count = 1;
                 appropriate_Values = new Dictionary<string, bool>();
                 Has_Janus = false;
                 return result;
             }
             step = "";
             sub_step = "";
-            count = 0;
+            count = 1;
             appropriate_Values = new Dictionary<string, bool>();
             Has_Janus = false;
             return final_step;
