@@ -1,115 +1,15 @@
 graph logic {
-node1 [label = "|"]
-node2 [label = ">"]
+node1 [label = ">"]
+node2 [label = "!x"]
 node1 -- node2
-node3 [label = "~"]
+node3 [label = "@y"]
 node2 -- node3
-node4 [label = ">"]
+node4 [label = "P(x,y)"]
 node3 -- node4
-node5 [label = "|"]
-node4 -- node5
-node6 [label = "C"]
+node5 [label = "@q"]
+node1 -- node5
+node6 [label = "!p"]
 node5 -- node6
-node7 [label = "C"]
-node5 -- node7
-node8 [label = "B"]
-node4 -- node8
-node9 [label = "|"]
-node2 -- node9
-node10 [label = "~"]
-node9 -- node10
-node11 [label = ">"]
-node10 -- node11
-node12 [label = "&"]
-node11 -- node12
-node13 [label = "&"]
-node12 -- node13
-node14 [label = ">"]
-node13 -- node14
-node15 [label = "="]
-node14 -- node15
-node16 [label = "C"]
-node15 -- node16
-node17 [label = "A"]
-node15 -- node17
-node18 [label = "B"]
-node14 -- node18
-node19 [label = "C"]
-node13 -- node19
-node20 [label = "B"]
-node12 -- node20
-node21 [label = ">"]
-node11 -- node21
-node22 [label = "C"]
-node21 -- node22
-node23 [label = "C"]
-node21 -- node23
-node24 [label = "C"]
-node9 -- node24
-node25 [label = "="]
-node1 -- node25
-node26 [label = "="]
-node25 -- node26
-node27 [label = "&"]
-node26 -- node27
-node28 [label = "="]
-node27 -- node28
-node29 [label = "~"]
-node28 -- node29
-node30 [label = "~"]
-node29 -- node30
-node31 [label = "&"]
-node30 -- node31
-node32 [label = "A"]
-node31 -- node32
-node33 [label = "&"]
-node31 -- node33
-node34 [label = "C"]
-node33 -- node34
-node35 [label = "C"]
-node33 -- node35
-node36 [label = "D"]
-node28 -- node36
-node37 [label = "|"]
-node27 -- node37
-node38 [label = "|"]
-node37 -- node38
-node39 [label = "C"]
-node38 -- node39
-node40 [label = "B"]
-node38 -- node40
-node41 [label = "B"]
-node37 -- node41
-node42 [label = "|"]
-node26 -- node42
-node43 [label = "&"]
-node42 -- node43
-node44 [label = "="]
-node43 -- node44
-node45 [label = ">"]
-node44 -- node45
-node46 [label = "C"]
-node45 -- node46
-node47 [label = "C"]
-node45 -- node47
-node48 [label = "B"]
-node44 -- node48
-node49 [label = "C"]
-node43 -- node49
-node50 [label = "&"]
-node42 -- node50
-node51 [label = "A"]
-node50 -- node51
-node52 [label = "C"]
-node50 -- node52
-node53 [label = "|"]
-node25 -- node53
-node54 [label = "|"]
-node53 -- node54
-node55 [label = "A"]
-node54 -- node55
-node56 [label = "C"]
-node54 -- node56
-node57 [label = "B"]
-node53 -- node57
+node7 [label = "P(p,q)"]
+node6 -- node7
 }

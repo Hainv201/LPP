@@ -44,9 +44,8 @@ namespace LPP
                 else if (inputtedfunction[i] == ')' && IsAfterPredicate)
                 {
                     IsAfterPredicate = false;
-                    
                 }
-                if (inputtedfunction[i] == '(' || inputtedfunction[i] != ')' || inputtedfunction[i] != ',' || inputtedfunction[i] != '.'|| i == inputtedfunction.Length -1)
+                if (inputtedfunction[i] == '(' || inputtedfunction[i] == ')' || inputtedfunction[i] == ',' || inputtedfunction[i] == '.'|| i == inputtedfunction.Length -1 || inputtedfunction[i] == '!' || inputtedfunction[i] == '@')
                 {
                     Read = false;
                 }
@@ -151,7 +150,7 @@ namespace LPP
                 }
             }
             //1 operand
-            else if (token.Contains("@"))
+            else if (token == "@")
             {
                 IsPredicate = true;
                 currentNode = new Universal();
@@ -167,7 +166,7 @@ namespace LPP
                 listNotations.RemoveAt(0);
                 currentNode.LeftOperand = CreateTree();
             }
-            else if (token.Contains("!"))
+            else if (token == "!")
             {
                 IsPredicate = true;
                 currentNode = new Existential();
