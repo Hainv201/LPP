@@ -1,38 +1,26 @@
 graph tableaux {
 node[shape=box]
-node1 [label = "{(~(((~((C | C) > B)) > ((~(((((C = A) > B) & C) & B) > (C > C))) | C)) | (((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))) = ((A | C) | B))))} []"]
-node2 [label = "{(~((~((C | C) > B)) > ((~(((((C = A) > B) & C) & B) > (C > C))) | C))), (~(((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))) = ((A | C) | B)))} []"]
+node1 [label = "{(~((!x.P(x) | !x.Q(x)) > !x.(P(x) | Q(x))))} []"]
+node2 [label = "{(!x.P(x) | !x.Q(x)), (~!x.(P(x) | Q(x)))} []"]
 node1 -- node2
-node3 [label = "{(~(((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))) = ((A | C) | B))), (~((C | C) > B)), (~((~(((((C = A) > B) & C) & B) > (C > C))) | C))} []"]
+node3 [label = "{(~!x.(P(x) | Q(x))), !x.P(x)} []"]
 node2 -- node3
-node4 [label = "{(~(((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))) = ((A | C) | B))), (~((~(((((C = A) > B) & C) & B) > (C > C))) | C)), (C | C), (~B)} []"]
+node4 [label = "{(~!x.(P(x) | Q(x))), P(a)} [a]"]
 node3 -- node4
-node5 [label = "{(~(((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))) = ((A | C) | B))), (C | C), (~B), (~(~(((((C = A) > B) & C) & B) > (C > C)))), (~C)} []"]
+node5 [label = "{(~!x.(P(x) | Q(x))), P(a), (~(P(a) | Q(a)))} [a]"]
 node4 -- node5
-node6 [label = "{(~(((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))) = ((A | C) | B))), (C | C), (~B), (~C), (((((C = A) > B) & C) & B) > (C > C))} []"]
+node6 [label = "{(~!x.(P(x) | Q(x))), P(a), (~P(a)), (~Q(a))} [a]"]
 node5 -- node6
-node7 [label = "{(C | C), (~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), (~((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C)))), ((A | C) | B)} []"]
+node7 [ label = "X" ]
 node6 -- node7
-node8 [label = "{(~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), (~((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C)))), ((A | C) | B), C} []"]
-node7 -- node8
-node9 [ label = "X" ]
+node8 [label = "{(~!x.(P(x) | Q(x))), !x.Q(x)} []"]
+node2 -- node8
+node9 [label = "{(~!x.(P(x) | Q(x))), Q(b)} [b]"]
 node8 -- node9
-node10 [label = "{(~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), (~((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C)))), ((A | C) | B), C} []"]
-node7 -- node10
-node11 [ label = "X" ]
+node10 [label = "{(~!x.(P(x) | Q(x))), Q(b), (~(P(b) | Q(b)))} [b]"]
+node9 -- node10
+node11 [label = "{(~!x.(P(x) | Q(x))), Q(b), (~P(b)), (~Q(b))} [b]"]
 node10 -- node11
-node12 [label = "{(C | C), (~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), ((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))), (~((A | C) | B))} []"]
-node6 -- node12
-node13 [label = "{(C | C), (~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), ((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))), (~(A | C))} []"]
-node12 -- node13
-node14 [label = "{(C | C), (~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), ((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))), (~A)} []"]
-node13 -- node14
-node15 [label = "{(~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), ((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))), (~A), C} []"]
-node14 -- node15
-node16 [ label = "X" ]
-node15 -- node16
-node17 [label = "{(~B), (~C), (((((C = A) > B) & C) & B) > (C > C)), ((((~(~(A & (C & C)))) = D) & ((C | B) | B)) = ((((C > C) = B) & C) | (A & C))), (~A), C} []"]
-node14 -- node17
-node18 [ label = "X" ]
-node17 -- node18
+node12 [ label = "X" ]
+node11 -- node12
 }

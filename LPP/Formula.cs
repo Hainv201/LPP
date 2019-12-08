@@ -33,9 +33,10 @@ namespace LPP
             listNotations = new List<string>();
             int predicateIndex = -1;
             bool IsAfterPredicate = false;
+            string token = "";
+            bool Read = true;
             for (int i = 0; i < inputtedfunction.Length; i++)
             {
-                string token = "";
                 if (inputtedfunction[i] != '(' && inputtedfunction[i] != ')' && inputtedfunction[i] != ',' && inputtedfunction[i] != '.')
                 {
                     token += inputtedfunction[i];
@@ -45,13 +46,17 @@ namespace LPP
                     IsAfterPredicate = false;
                     
                 }
+                if (inputtedfunction[i] == '(' || inputtedfunction[i] != ')' || inputtedfunction[i] != ',' || inputtedfunction[i] != '.'|| i == inputtedfunction.Length -1)
+                {
+                    Read = false;
+                }
                 if (predicateIndex != -1 && !IsAfterPredicate)
                 {
                     int nrPredicateVariables = listNotations.Count - predicateIndex - 1;
                     listNotations[predicateIndex] = listNotations[predicateIndex] + nrPredicateVariables;
                     predicateIndex = -1;
                 }
-                if (token !="")
+                if (token != "" && !Read)
                 {
                     if (token.Any(char.IsUpper) && inputtedfunction[i + 1] == '(')
                     {
@@ -59,6 +64,8 @@ namespace LPP
                         IsAfterPredicate = true;
                     }
                     listNotations.Add(token);
+                    Read = true;
+                    token = "";
                 }
             }
         }
