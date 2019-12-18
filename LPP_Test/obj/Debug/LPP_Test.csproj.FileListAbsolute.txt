@@ -11,7 +11,6 @@ C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\bin\Debug\LPP.exe.config
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.csprojAssemblyReference.cache
-C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.csproj.CoreCompileInputs.cache
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.csproj.CopyComplete
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.dll
 C:\Users\Hai Nguyen\Desktop\New LPP\LPP\LPP_Test\obj\Debug\LPP_Test.pdb

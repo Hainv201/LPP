@@ -40,24 +40,28 @@ namespace LPP
 
         public override Logic Nandify()
         {
+            Logic left_nandify = this.LeftOperand.Nandify();
+            Logic right_nandify = this.RightOperand.Nandify();
             Logic nand = new NotAnd();
-            nand.LeftOperand = this.LeftOperand.Nandify();
+            nand.LeftOperand = left_nandify;
             nand.RightOperand = new NotAnd();
-            nand.RightOperand.LeftOperand = this.RightOperand.Nandify();
-            nand.RightOperand.RightOperand = this.RightOperand.Nandify();
+            nand.RightOperand.LeftOperand = right_nandify;
+            nand.RightOperand.RightOperand = right_nandify;
             return nand;
         }
 
         public override Logic ConvertToCNF()
         {
+            Logic left_convert = this.LeftOperand.ConvertToCNF();
+            Logic right_convert = this.RightOperand.ConvertToCNF();
             Disjunction root = new Disjunction();
 
             Negation left_negation = new Negation();
-            left_negation.LeftOperand = this.LeftOperand;
+            left_negation.LeftOperand = left_convert;
 
-            root.LeftOperand = left_negation;
-            root.RightOperand = RightOperand;
-            return root.ConvertToCNF();
+            root.LeftOperand = left_negation.ConvertToCNF();
+            root.RightOperand = right_convert;
+            return root;
         }
     }
 }

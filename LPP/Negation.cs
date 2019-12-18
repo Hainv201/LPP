@@ -40,9 +40,10 @@ namespace LPP
 
         public override Logic Nandify()
         {
+            Logic left_nandify = this.LeftOperand.Nandify();
             Logic nand = new NotAnd();
-            nand.LeftOperand = this.LeftOperand.Nandify();
-            nand.RightOperand = this.LeftOperand.Nandify();
+            nand.LeftOperand = left_nandify;
+            nand.RightOperand = left_nandify;
             return nand;
         }
 
@@ -53,34 +54,34 @@ namespace LPP
             {
                 Conjunction root = new Conjunction();
                 Negation left_negation = new Negation();
-                left_negation.LeftOperand = d.LeftOperand;
+                left_negation.LeftOperand = d.LeftOperand.ConvertToCNF();
                 Negation right_negation = new Negation();
-                right_negation.LeftOperand = d.RightOperand;
+                right_negation.LeftOperand = d.RightOperand.ConvertToCNF();
 
-                root.LeftOperand = left_negation;
-                root.RightOperand = right_negation;
-                return root.ConvertToCNF();
+                root.LeftOperand = left_negation.ConvertToCNF();
+                root.RightOperand = right_negation.ConvertToCNF();
+                return root;
             }
             else if (this.LeftOperand is Conjunction c)
             {
                 Disjunction root = new Disjunction();
 
                 Negation left_negation = new Negation();
-                left_negation.LeftOperand = c.LeftOperand;
+                left_negation.LeftOperand = c.LeftOperand.ConvertToCNF();
                 Negation right_negation = new Negation();
-                right_negation.LeftOperand = c.RightOperand;
+                right_negation.LeftOperand = c.RightOperand.ConvertToCNF();
 
-                root.LeftOperand = left_negation;
-                root.RightOperand = right_negation;
+                root.LeftOperand = left_negation.ConvertToCNF();
+                root.RightOperand = right_negation.ConvertToCNF();
 
-                return root.ConvertToCNF();
+                return root;
             }
             else if (this.LeftOperand is NotAnd notAnd)
             {
                 Conjunction root = new Conjunction();
-                root.LeftOperand = notAnd.LeftOperand;
-                root.RightOperand = notAnd.RightOperand;
-                return root.ConvertToCNF();
+                root.LeftOperand = notAnd.LeftOperand.ConvertToCNF();
+                root.RightOperand = notAnd.RightOperand.ConvertToCNF();
+                return root;
             }
             else if (this.LeftOperand is Negation negation)
             {

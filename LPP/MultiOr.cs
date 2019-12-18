@@ -117,5 +117,41 @@ namespace LPP
                 }
             }
         }
+
+        public void GetMultiOrAfterDavisPutnam(Dictionary<string,string> appropriateValues)
+        {
+            for (int i = 0; i < MultiOr_ListLogics.Count; i++)
+            {
+                var logic = MultiOr_ListLogics[i];
+                if (logic is Negation && logic.LeftOperand is Variable v)
+                {
+                    var value = appropriateValues.FirstOrDefault(x => x.Key == v.Letter).Value;
+                    if (value == "True")
+                    {
+                        MultiOr_ListLogics.Remove(logic);
+                        GetMultiOrAfterDavisPutnam(appropriateValues);
+                    }
+                    else if(value == "False")
+                    {
+                        MultiOr_ListLogics.Clear();
+                        break;
+                    }
+                }
+                else if (logic is Variable v1)
+                {
+                    var value = appropriateValues.FirstOrDefault(x => x.Key == v1.Letter).Value;
+                    if (value == "True")
+                    {
+                        MultiOr_ListLogics.Clear();
+                        break;
+                    }
+                    else if(value == "False")
+                    {
+                        MultiOr_ListLogics.Remove(logic);
+                        GetMultiOrAfterDavisPutnam(appropriateValues);
+                    }
+                }
+            }
+        }
     }
 }

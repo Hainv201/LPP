@@ -40,13 +40,15 @@ namespace LPP
 
         public override Logic Nandify()
         {
+            Logic left_nandify = this.LeftOperand.Nandify();
+            Logic right_nandify = this.RightOperand.Nandify();
             Logic nand = new NotAnd();
             nand.LeftOperand = new NotAnd();
-            nand.LeftOperand.LeftOperand = this.LeftOperand.Nandify();
-            nand.LeftOperand.RightOperand = this.LeftOperand.Nandify();
+            nand.LeftOperand.LeftOperand = left_nandify;
+            nand.LeftOperand.RightOperand = left_nandify;
             nand.RightOperand = new NotAnd();
-            nand.RightOperand.LeftOperand = this.RightOperand.Nandify();
-            nand.RightOperand.RightOperand = this.RightOperand.Nandify();
+            nand.RightOperand.LeftOperand = right_nandify;
+            nand.RightOperand.RightOperand = right_nandify;
             return nand;
         }
         public override Logic Simplify()
@@ -92,9 +94,9 @@ namespace LPP
                 d2.LeftOperand = conj.RightOperand;
                 d2.RightOperand = this.RightOperand;
 
-                root.LeftOperand = d1;
-                root.RightOperand = d2;
-                return root.ApplyDistributiveLaw();
+                root.LeftOperand = d1.ApplyDistributiveLaw();
+                root.RightOperand = d2.ApplyDistributiveLaw();
+                return root;
             }
             else if (this.RightOperand is Conjunction conj1)
             {
@@ -107,9 +109,9 @@ namespace LPP
                 d2.LeftOperand = this.LeftOperand;
                 d2.RightOperand = conj1.RightOperand;
 
-                root.LeftOperand = d1;
-                root.RightOperand = d2;
-                return root.ApplyDistributiveLaw();
+                root.LeftOperand = d1.ApplyDistributiveLaw();
+                root.RightOperand = d2.ApplyDistributiveLaw();
+                return root;
             }
             return this.Simplify();
         }

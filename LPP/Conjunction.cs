@@ -40,15 +40,17 @@ namespace LPP
 
         public override Logic Nandify()
         {
+            Logic left_nandify = this.LeftOperand.Nandify();
+            Logic right_nandify = this.RightOperand.Nandify();
             Logic nand = new NotAnd();
             //Left
             nand.LeftOperand = new NotAnd();
-            nand.LeftOperand.LeftOperand = this.LeftOperand.Nandify();
-            nand.LeftOperand.RightOperand = this.RightOperand.Nandify();
+            nand.LeftOperand.LeftOperand = left_nandify;
+            nand.LeftOperand.RightOperand = right_nandify;
             //Right
             nand.RightOperand = new NotAnd();
-            nand.RightOperand.LeftOperand = this.LeftOperand.Nandify();
-            nand.RightOperand.RightOperand = this.RightOperand.Nandify();   
+            nand.RightOperand.LeftOperand = left_nandify;
+            nand.RightOperand.RightOperand = right_nandify;
             return nand;
         }
 

@@ -373,8 +373,8 @@ namespace LPP
             if (nand != null)
             {
                 TruthTable nandtable = nand.CreateTruthTable(infix.Variables);
-                nand_ListBox.Items.Add(nand);
                 hash_Code.Items.Add("NAND: " + nandtable.GetTruthTableHashCode());
+                //nand_ListBox.Items.Add(nand);
             }
         }
 

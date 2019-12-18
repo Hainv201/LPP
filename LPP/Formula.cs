@@ -57,10 +57,13 @@ namespace LPP
                 }
                 if (token != "" && !Read)
                 {
-                    if (token.Any(char.IsUpper) && inputtedfunction[i + 1] == '(')
+                    if (i + 1 < inputtedfunction.Length)
                     {
-                        predicateIndex = listNotations.Count;
-                        IsAfterPredicate = true;
+                        if (token.Any(char.IsUpper) && inputtedfunction[i + 1] == '(')
+                        {
+                            predicateIndex = listNotations.Count;
+                            IsAfterPredicate = true;
+                        }
                     }
                     listNotations.Add(token);
                     Read = true;
