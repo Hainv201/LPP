@@ -83,7 +83,36 @@ namespace LPP
         {
             this.LeftOperand = this.LeftOperand.ApplyDistributiveLaw();
             this.RightOperand = this.RightOperand.ApplyDistributiveLaw();
-            if (this.LeftOperand is Conjunction conj)
+            if (this.LeftOperand is Conjunction c1 && this.RightOperand is Conjunction c2)
+            {
+                Conjunction root = new Conjunction();
+
+                Conjunction left_ = new Conjunction();
+                Disjunction d1 = new Disjunction();
+                d1.LeftOperand = c1.LeftOperand;
+                d1.RightOperand = c2.LeftOperand;
+                Disjunction d2 = new Disjunction();
+                d2.LeftOperand = c1.LeftOperand;
+                d2.RightOperand = c2.RightOperand;
+                left_.LeftOperand = d1.ApplyDistributiveLaw();
+                left_.RightOperand = d2.ApplyDistributiveLaw();
+
+                Conjunction right_ = new Conjunction();
+                Disjunction d3 = new Disjunction();
+                d3.LeftOperand = c1.RightOperand;
+                d3.RightOperand = c2.LeftOperand;
+                Disjunction d4 = new Disjunction();
+                d4.LeftOperand = c1.RightOperand;
+                d4.RightOperand = c2.RightOperand;
+                right_.LeftOperand = d3.ApplyDistributiveLaw();
+                right_.RightOperand = d4.ApplyDistributiveLaw();
+
+                root.LeftOperand = left_;
+                root.RightOperand = right_;
+
+                return root.Simplify();
+            }
+            else if (this.LeftOperand is Conjunction conj)
             {
                 Conjunction root = new Conjunction();
                 Disjunction d1 = new Disjunction();
@@ -96,7 +125,7 @@ namespace LPP
 
                 root.LeftOperand = d1.ApplyDistributiveLaw();
                 root.RightOperand = d2.ApplyDistributiveLaw();
-                return root;
+                return root.Simplify();
             }
             else if (this.RightOperand is Conjunction conj1)
             {
@@ -111,9 +140,19 @@ namespace LPP
 
                 root.LeftOperand = d1.ApplyDistributiveLaw();
                 root.RightOperand = d2.ApplyDistributiveLaw();
-                return root;
+                return root.Simplify();
             }
             return this.Simplify();
+        }
+
+        public override string GetRandomPrefix()
+        {
+            return $"|({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
+        }
+
+        public override string GetCNFForm()
+        {
+            return LeftOperand.GetCNFForm() + RightOperand.GetCNFForm();
         }
     }
 }

@@ -18,14 +18,6 @@ namespace LPP
             }
             ListMultiOrs = new List<MultiOr>(multiOrs);
         }
-        public MultiAnd(Logic logic)
-        {
-            ListMultiOrs = new List<MultiOr>();
-            List<Logic> Temp_List = new List<Logic>();
-            Temp_List.Add(logic);
-            InterpretLogic(Temp_List);
-            ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
-        }
         public override string ToString()
         {
             return "[" + String.Join(",", ListMultiOrs) + "]";
@@ -68,29 +60,6 @@ namespace LPP
             }
             return logic;
         }
-
-        private void InterpretLogic(List<Logic> logics)
-        {
-            ListMultiOrs = ListMultiOrs.Distinct(new MultiOrComparer()).ToList();
-            while(logics.Count != 0)
-            {
-                Logic logic = logics.First();
-                if (logic is Conjunction conjunction)
-                {
-                    logics.Add(conjunction.LeftOperand);
-                    logics.Add(conjunction.RightOperand);
-                    logics.Remove(logic);
-                    InterpretLogic(logics);
-                }
-                else
-                {
-                    MultiOr multiOr = new MultiOr(logic);
-                    multiOr.GetCNF();
-                    ListMultiOrs.Add(multiOr);
-                    logics.Remove(logic);
-                    InterpretLogic(logics);
-                }
-            }
-        }
+        
     }
 }

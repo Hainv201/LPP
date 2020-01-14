@@ -18,11 +18,7 @@ namespace LPP
             }
             MultiOr_ListLogics = new List<Logic>(logics);
         }
-        public MultiOr(Logic logic)
-        {
-            MultiOr_ListLogics = new List<Logic>();
-            MultiOr_ListLogics.Add(logic);
-        }
+
         public override string ToString()
         {
             string toString = "";
@@ -93,29 +89,6 @@ namespace LPP
                 }
             }
             return logic;
-        }
-
-        // Get CNF Form
-        public void GetCNF()
-        {
-            InterpretInputLogic();
-            MultiOr_ListLogics = MultiOr_ListLogics.Distinct(new LogicComparer()).ToList();
-        }
-
-        private void InterpretInputLogic()
-        {
-            MultiOr_ListLogics = MultiOr_ListLogics.Distinct(new LogicComparer()).ToList();
-            for (int i = 0; i < MultiOr_ListLogics.Count; i++)
-            {
-                Logic logic = MultiOr_ListLogics[i];
-                if (logic is Disjunction disjunction)
-                {
-                    MultiOr_ListLogics.Add(disjunction.LeftOperand);
-                    MultiOr_ListLogics.Add(disjunction.RightOperand);
-                    MultiOr_ListLogics.Remove(logic);
-                    InterpretInputLogic();
-                }
-            }
         }
 
         public void GetMultiOrAfterDavisPutnam(Dictionary<string,string> appropriateValues)

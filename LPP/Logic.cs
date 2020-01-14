@@ -27,32 +27,32 @@ namespace LPP
         // For Graph
         public string CreateGraph(ref int index, int preIndex = 0)
         {
-            string graph = Environment.NewLine+$"node{index} [label = \"{GetLabel()}\"]";
+            string logicgraph = Environment.NewLine+$"node{index} [label = \"{GetLabel()}\"]";
             if (preIndex != 0)
             {
-                graph += Environment.NewLine+$"node{preIndex} -- node{index}";
+                logicgraph += Environment.NewLine+$"node{preIndex} -- node{index}";
             }
             //2 operands
             if (this is BiImplication || this is Conjunction || this is Disjunction || this is Implication || this is NotAnd)
             {
                 int pre = index;
                 index++;
-                graph += LeftOperand.CreateGraph(ref index, pre);
-                graph += RightOperand.CreateGraph(ref index, pre);
-                return graph;
+                logicgraph += LeftOperand.CreateGraph(ref index, pre);
+                logicgraph += RightOperand.CreateGraph(ref index, pre);
+                return logicgraph;
             }
             // 1 operand
             else if (this is Negation || this is Universal || this is Existential)
             {
                 int pre = index;
                 index++;
-                graph += LeftOperand.CreateGraph(ref index, pre);
-                return graph;
+                logicgraph += LeftOperand.CreateGraph(ref index, pre);
+                return logicgraph;
             }
             else
             {
                 index++;
-                return graph;
+                return logicgraph;
             }
         }
         public abstract string GetLabel();
@@ -94,6 +94,15 @@ namespace LPP
         public virtual Logic Simplify()
         {
             return this;
+        }
+
+        public virtual string GetRandomPrefix()
+        {
+            return this.GetRandomPrefix();
+        }
+        public virtual string GetCNFForm()
+        {
+            return this.GetCNFForm();
         }
     }
 }

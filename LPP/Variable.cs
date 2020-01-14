@@ -35,5 +35,15 @@ namespace LPP
         {
             return this;
         }
+
+        public override string GetRandomPrefix()
+        {
+            return this.ToString();
+        }
+
+        public override string GetCNFForm()
+        {
+            return this.ToString();
+        }
     }
 }

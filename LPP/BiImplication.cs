@@ -79,7 +79,12 @@ namespace LPP
 
             root.LeftOperand = left_disjunction;
             root.RightOperand = right_disjunction;
-            return root;
+            return root.Simplify();
+        }
+
+        public override string GetRandomPrefix()
+        {
+            return $"=({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
         }
     }
 }

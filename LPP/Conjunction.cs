@@ -88,5 +88,14 @@ namespace LPP
             this.RightOperand = this.RightOperand.ApplyDistributiveLaw();
             return this.Simplify();
         }
+
+        public override string GetRandomPrefix()
+        {
+            return $"&({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
+        }
+        public override string GetCNFForm()
+        {
+            return LeftOperand.GetCNFForm() + "," + RightOperand.GetCNFForm();
+        }
     }
 }

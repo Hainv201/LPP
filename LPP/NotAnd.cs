@@ -48,17 +48,24 @@ namespace LPP
 
         public override Logic ConvertToCNF()
         {
+            Logic left_convert = this.LeftOperand.ConvertToCNF();
+            Logic right_convert = this.RightOperand.ConvertToCNF();
             Disjunction root = new Disjunction();
 
             Negation left_negation = new Negation();
-            left_negation.LeftOperand = this.LeftOperand.ConvertToCNF();
+            left_negation.LeftOperand = left_convert;
             Negation right_negation = new Negation();
-            right_negation.LeftOperand = this.RightOperand.ConvertToCNF();  
+            right_negation.LeftOperand = right_convert;
 
             root.LeftOperand = left_negation.ConvertToCNF();
             root.RightOperand = right_negation.ConvertToCNF();
 
-            return root;
+            return root.Simplify();
+        }
+
+        public override string GetRandomPrefix()
+        {
+            return $"%({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
         }
     }
 }

@@ -53,7 +53,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Prefix = new System.Windows.Forms.Label();
             this.clear = new System.Windows.Forms.Button();
-            this.graph = new System.Windows.Forms.Button();
+            this.genarate_graph = new System.Windows.Forms.Button();
             this.read = new System.Windows.Forms.Button();
             this.infix_listBox = new System.Windows.Forms.ListBox();
             this.Cnf_listBox = new System.Windows.Forms.ListBox();
@@ -62,9 +62,15 @@
             this.David_Putnam = new System.Windows.Forms.Button();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.label10 = new System.Windows.Forms.Label();
+            this.randomPrefix = new System.Windows.Forms.Button();
+            this.Tseitin = new System.Windows.Forms.Button();
+            this.test = new System.Windows.Forms.Button();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // labelUnboundVariables
@@ -91,7 +97,7 @@
             // 
             // replace
             // 
-            this.replace.Location = new System.Drawing.Point(761, 363);
+            this.replace.Location = new System.Drawing.Point(876, 363);
             this.replace.Name = "replace";
             this.replace.Size = new System.Drawing.Size(75, 23);
             this.replace.TabIndex = 55;
@@ -103,7 +109,7 @@
             // 
             this.textBoxReplaceVariable.Location = new System.Drawing.Point(625, 365);
             this.textBoxReplaceVariable.Name = "textBoxReplaceVariable";
-            this.textBoxReplaceVariable.Size = new System.Drawing.Size(130, 20);
+            this.textBoxReplaceVariable.Size = new System.Drawing.Size(245, 20);
             this.textBoxReplaceVariable.TabIndex = 54;
             // 
             // listBoxUnboundVariables
@@ -111,15 +117,15 @@
             this.listBoxUnboundVariables.FormattingEnabled = true;
             this.listBoxUnboundVariables.Location = new System.Drawing.Point(626, 252);
             this.listBoxUnboundVariables.Name = "listBoxUnboundVariables";
-            this.listBoxUnboundVariables.Size = new System.Drawing.Size(211, 95);
+            this.listBoxUnboundVariables.Size = new System.Drawing.Size(325, 95);
             this.listBoxUnboundVariables.TabIndex = 53;
             // 
             // listBoxBoundVariables
             // 
             this.listBoxBoundVariables.FormattingEnabled = true;
-            this.listBoxBoundVariables.Location = new System.Drawing.Point(625, 125);
+            this.listBoxBoundVariables.Location = new System.Drawing.Point(626, 125);
             this.listBoxBoundVariables.Name = "listBoxBoundVariables";
-            this.listBoxBoundVariables.Size = new System.Drawing.Size(211, 108);
+            this.listBoxBoundVariables.Size = new System.Drawing.Size(326, 108);
             this.listBoxBoundVariables.TabIndex = 52;
             // 
             // btSemanticTableaux
@@ -145,24 +151,24 @@
             // 
             this.dataGridView2.AllowUserToOrderColumns = true;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(301, 437);
+            this.dataGridView2.Location = new System.Drawing.Point(248, 418);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(240, 214);
+            this.dataGridView2.Size = new System.Drawing.Size(230, 215);
             this.dataGridView2.TabIndex = 49;
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(15, 437);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 418);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 214);
+            this.dataGridView1.Size = new System.Drawing.Size(230, 215);
             this.dataGridView1.TabIndex = 48;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(298, 402);
+            this.label8.Location = new System.Drawing.Point(245, 402);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(81, 13);
             this.label8.TabIndex = 47;
@@ -292,16 +298,16 @@
             this.clear.UseVisualStyleBackColor = true;
             this.clear.Click += new System.EventHandler(this.clear_Click);
             // 
-            // graph
+            // genarate_graph
             // 
-            this.graph.Enabled = false;
-            this.graph.Location = new System.Drawing.Point(625, 46);
-            this.graph.Name = "graph";
-            this.graph.Size = new System.Drawing.Size(100, 25);
-            this.graph.TabIndex = 32;
-            this.graph.Text = "Graph";
-            this.graph.UseVisualStyleBackColor = true;
-            this.graph.Click += new System.EventHandler(this.graph_Click);
+            this.genarate_graph.Enabled = false;
+            this.genarate_graph.Location = new System.Drawing.Point(625, 46);
+            this.genarate_graph.Name = "genarate_graph";
+            this.genarate_graph.Size = new System.Drawing.Size(100, 25);
+            this.genarate_graph.TabIndex = 32;
+            this.genarate_graph.Text = "Graph";
+            this.genarate_graph.UseVisualStyleBackColor = true;
+            this.genarate_graph.Click += new System.EventHandler(this.graph_Click);
             // 
             // read
             // 
@@ -366,25 +372,78 @@
             // 
             this.dataGridView3.AllowUserToOrderColumns = true;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(585, 437);
+            this.dataGridView3.Location = new System.Drawing.Point(720, 418);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(240, 214);
+            this.dataGridView3.Size = new System.Drawing.Size(235, 215);
             this.dataGridView3.TabIndex = 64;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(582, 402);
+            this.label10.Location = new System.Drawing.Point(717, 402);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(96, 13);
             this.label10.TabIndex = 65;
             this.label10.Text = "Appropriate Values";
             // 
+            // randomPrefix
+            // 
+            this.randomPrefix.Location = new System.Drawing.Point(844, 9);
+            this.randomPrefix.Name = "randomPrefix";
+            this.randomPrefix.Size = new System.Drawing.Size(107, 25);
+            this.randomPrefix.TabIndex = 66;
+            this.randomPrefix.Text = "Random";
+            this.randomPrefix.UseVisualStyleBackColor = true;
+            this.randomPrefix.Click += new System.EventHandler(this.randomPrefix_Click);
+            // 
+            // Tseitin
+            // 
+            this.Tseitin.Location = new System.Drawing.Point(844, 46);
+            this.Tseitin.Name = "Tseitin";
+            this.Tseitin.Size = new System.Drawing.Size(107, 25);
+            this.Tseitin.TabIndex = 67;
+            this.Tseitin.Text = "Tseitin";
+            this.Tseitin.UseVisualStyleBackColor = true;
+            this.Tseitin.Click += new System.EventHandler(this.Tseitin_Click);
+            // 
+            // test
+            // 
+            this.test.Location = new System.Drawing.Point(844, 81);
+            this.test.Name = "test";
+            this.test.Size = new System.Drawing.Size(107, 25);
+            this.test.TabIndex = 68;
+            this.test.Text = "Test";
+            this.test.UseVisualStyleBackColor = true;
+            this.test.Click += new System.EventHandler(this.test_Click);
+            // 
+            // dataGridView4
+            // 
+            this.dataGridView4.AllowUserToOrderColumns = true;
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Location = new System.Drawing.Point(484, 418);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.Size = new System.Drawing.Size(230, 215);
+            this.dataGridView4.TabIndex = 69;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(481, 402);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(68, 13);
+            this.label11.TabIndex = 70;
+            this.label11.Text = "Tseitin Table";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(850, 663);
+            this.ClientSize = new System.Drawing.Size(964, 666);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.dataGridView4);
+            this.Controls.Add(this.test);
+            this.Controls.Add(this.Tseitin);
+            this.Controls.Add(this.randomPrefix);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.dataGridView3);
             this.Controls.Add(this.David_Putnam);
@@ -417,13 +476,14 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Prefix);
             this.Controls.Add(this.clear);
-            this.Controls.Add(this.graph);
+            this.Controls.Add(this.genarate_graph);
             this.Controls.Add(this.read);
             this.Name = "Form1";
             this.Text = "VH Nguyen - 3206130";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -456,7 +516,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label Prefix;
         private System.Windows.Forms.Button clear;
-        private System.Windows.Forms.Button graph;
+        private System.Windows.Forms.Button genarate_graph;
         private System.Windows.Forms.Button read;
         private System.Windows.Forms.ListBox infix_listBox;
         private System.Windows.Forms.ListBox Cnf_listBox;
@@ -465,6 +525,11 @@
         private System.Windows.Forms.Button David_Putnam;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button randomPrefix;
+        private System.Windows.Forms.Button Tseitin;
+        private System.Windows.Forms.Button test;
+        private System.Windows.Forms.DataGridView dataGridView4;
+        private System.Windows.Forms.Label label11;
     }
 }
 

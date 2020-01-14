@@ -30,16 +30,6 @@ namespace LPP
             Cnf_List_Variables.Sort();
         }
 
-        // Constructor for a logic
-        public CNF(Logic logic)
-        {
-            step = "";
-            Has_Janus = false;
-            Cnf_List_Variables = new List<Variable>();
-            appropriate_Values = new Dictionary<string, string>();
-            topLayer = new MultiAnd(logic);
-        }
-
         //Parse Input in [aB,c] form
         private void ParseInput(string input)
         {
@@ -134,23 +124,23 @@ namespace LPP
 
         public string CreateCNFGraph(ref int index, int preIndex = 0)
         {
-            string graph = Environment.NewLine + $"node{index} [label = \"&\"]";
+            string cnfgraph = Environment.NewLine + $"node{index} [label = \"&\"]";
             preIndex = index;
             index++;
             foreach (MultiOr multiOr in topLayer.ListMultiOrs)
             {
-                graph += Environment.NewLine + $"node{index} [label = \"|\"]";
-                graph += Environment.NewLine + $"node{preIndex} -- node{index}";
+                cnfgraph += Environment.NewLine + $"node{index} [label = \"|\"]";
+                cnfgraph += Environment.NewLine + $"node{preIndex} -- node{index}";
                 int pre = index;
                 foreach (Logic logic in multiOr.MultiOr_ListLogics)
                 {
                     index++;
-                    graph += Environment.NewLine + $"node{index} [label = \"{logic.ToString()}\"]";
-                    graph += Environment.NewLine + $"node{pre} -- node{index}";
+                    cnfgraph += Environment.NewLine + $"node{index} [label = \"{logic.ToString()}\"]";
+                    cnfgraph += Environment.NewLine + $"node{pre} -- node{index}";
                 }
                 index++;
             }
-            return graph;
+            return cnfgraph;
         }
         public override string ToString()
         {
@@ -168,9 +158,23 @@ namespace LPP
         {
             CNF processedCNF = ObjectExtension.CopyObject<CNF>(clone_cnf);
             step += $"Davis-Putnan {clone_cnf}" + " - Var: " + String.Join("", clone_cnf.Cnf_List_Variables) + Environment.NewLine;
+            if (clone_cnf.ToString() == "[False]")
+            {
+                Has_Janus = true;
+                step += $"Has Janus: UNSAT" + Environment.NewLine;
+                return;
+            }
             CNF afterRemoveUseLess = RemoveUseless(clone_cnf);
             step += $"Remove Useless: {afterRemoveUseLess}" + Environment.NewLine;
-            Variable variable = clone_cnf.Cnf_List_Variables.First();
+            Variable variable;
+            if (clone_cnf.Cnf_List_Variables.Count!= 0)
+            {
+                variable = clone_cnf.Cnf_List_Variables.First();
+            }
+            else
+            {
+                return;
+            }
             CNF afterSolveNonJanus = SolveNonJanus(afterRemoveUseLess, variable);
             clone_cnf.Cnf_List_Variables.Remove(variable);
             CNF afterResolution = Resolution(afterSolveNonJanus, variable);

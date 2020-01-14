@@ -61,7 +61,12 @@ namespace LPP
 
             root.LeftOperand = left_negation.ConvertToCNF();
             root.RightOperand = right_convert;
-            return root;
+            return root.Simplify();
+        }
+
+        public override string GetRandomPrefix()
+        {
+            return $">({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
         }
     }
 }

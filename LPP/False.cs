@@ -40,5 +40,15 @@ namespace LPP
         {
             return this;
         }
+
+        public override string GetRandomPrefix()
+        {
+            return "0";
+        }
+
+        public override string GetCNFForm()
+        {
+            return "False";
+        }
     }
 }

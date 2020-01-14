@@ -14,7 +14,7 @@ namespace LPP_Test
             Formula infix = new Formula(test);
             Logic logic = infix.RootProposition.ConvertToCNF();
             logic = logic.ApplyDistributiveLaw();
-            CNF cnf = new CNF(logic);
+            CNF cnf = new CNF("[" + logic.GetCNFForm() + "]");
             cnf.Cnf_List_Variables = infix.Variables;
             Assert.AreEqual(cnf.ToString(), "[D,CaA,Cab,CBA,CBb]");
         }
@@ -95,7 +95,7 @@ namespace LPP_Test
                 Formula infix = new Formula(item);
                 Logic logic = infix.RootProposition.ConvertToCNF();
                 logic = logic.ApplyDistributiveLaw();
-                CNF cnf = new CNF(logic);
+                CNF cnf = new CNF("["+logic.GetCNFForm()+"]");
                 cnf.Cnf_List_Variables = infix.Variables;
                 CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cnf);
                 cnf.DavisPutnan(clone_cnf);
@@ -121,7 +121,7 @@ namespace LPP_Test
                 Formula infix = new Formula(item);
                 Logic logic = infix.RootProposition.ConvertToCNF();
                 logic = logic.ApplyDistributiveLaw();
-                CNF cnf = new CNF(logic);
+                CNF cnf = new CNF("[" + logic.GetCNFForm() + "]");
                 cnf.ToString();
                 watch.Stop();
                 var elapsedMs = watch.ElapsedMilliseconds;

@@ -18,6 +18,8 @@ namespace LPP
     {
         Formula infix;
         CNF cNF;
+        const int range = 10;
+        Random random;
         public Form1()
         {
             InitializeComponent();
@@ -27,80 +29,9 @@ namespace LPP
         {
             try
             {
-                ClearForm();
-                List<string> testPrefixAndresults = new List<string>();
-                string input = "";
-                for (int i = 0; i < inputprefix.Lines.Length; i++)
-                {
-                    input += inputprefix.Lines[i];
-                }
-                input = input.Replace(" ", "");
-                if (input[0] == '[')
-                {
-                    cNF = new CNF(input);
-                    infix = new Formula();
-                    //Convert CNF to Logic
-                    infix.RootProposition = cNF.ConvertToLogic();
-                    if (infix.RootProposition != null)
-                    {
-                        infix_listBox.Items.Add(infix.RootProposition);
-                        infix.Variables = cNF.Cnf_List_Variables;
-                        ShowPropositionFormula();
-                    }
-                    //Show CNF
-                    Cnf_listBox.Items.Add(cNF.ToString());
-                    cnf_Graph.Enabled = true;
-                    David_Putnam.Enabled = true;
-                }
-                else
-                {
-                    infix = new Formula(input);
-                    infix_listBox.Items.Add(infix.RootProposition);
-                    if (!infix.IsPredicate)
-                    {
-                        ShowPropositionFormula();
-                        //Show CNF
-                        cNF = null;
-                        Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
-                        thread2.Start();
-
-                        if (!thread2.Join(55000))
-                        {
-                            cNF = null;
-                            thread2.Abort();
-                        }
-                        if (cNF != null)
-                        {
-                            Cnf_listBox.Items.Add(cNF.ToString());
-                        }
-                        cnf_Graph.Enabled = true;
-                        David_Putnam.Enabled = true;
-                    }
-                    else
-                    {
-                        cnf_Graph.Enabled = false;
-                        David_Putnam.Enabled = false;
-                        // Show bound variables;
-                        foreach (Variable variable in infix.BoundVariables)
-                        {
-                            listBoxBoundVariables.Items.Add(variable);
-                        }
-
-                        // Show unbound variables
-                        List<Variable> unboundVariables = infix.Variables.Except(infix.BoundVariables).ToList();
-                        unboundVariables.Sort();
-                        foreach (Variable variable in unboundVariables)
-                        {
-                            listBoxUnboundVariables.Items.Add(variable);
-                        }
-                    }
-                }
-                graph.Enabled = true;
+                ReadPrefix();
+                genarate_graph.Enabled = true;
                 btSemanticTableaux.Enabled = true;
-                //Print TESTED prefix
-                testPrefixAndresults.Add(inputprefix.Text);
-                PrintFormula(testPrefixAndresults);
-
             }
             catch (Exception ex)
             {
@@ -114,15 +45,15 @@ namespace LPP
             {
                 int index = 1;
                 string str = "graph logic {" + infix.RootProposition.CreateGraph(ref index) + Environment.NewLine + "}";
-                File.WriteAllText(@"graph.dot", str);
+                File.WriteAllText(@"logicgraph.dot", str);
 
                 Process dot = new Process();
                 dot.StartInfo.FileName = @"dot.exe";
-                dot.StartInfo.Arguments = "-Tpng -ograph.png graph.dot";
+                dot.StartInfo.Arguments = "-Tpng -ologicgraph.png logicgraph.dot";
                 dot.Start();
                 dot.WaitForExit();
 
-                Process.Start(@"graph.png");
+                Process.Start(@"logicgraph.png");
             }
             catch (Exception ex)
             {
@@ -172,7 +103,7 @@ namespace LPP
         {
             inputprefix.Text = "";
             btSemanticTableaux.Enabled = false;
-            graph.Enabled = false;
+            genarate_graph.Enabled = false;
             cnf_Graph.Enabled = false;
             David_Putnam.Enabled = false;
             ClearForm();
@@ -211,10 +142,6 @@ namespace LPP
             {
                 MessageBox.Show(ex.ToString());
             }
-        }
-        private void Nandify(ref Logic nand)
-        {
-            nand = infix.RootProposition.Nandify();
         }
 
         private void replace_Click(object sender, EventArgs e)
@@ -273,24 +200,12 @@ namespace LPP
 
         private void David_Putnam_Click(object sender, EventArgs e)
         {
-            dataGridView3.Columns.Clear();
-            dataGridView3.Rows.Clear();
-            CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
-            cNF.DavisPutnan(clone_cnf);
-            if (!cNF.GetHasJanusValue())
-            {
-                dataGridView3.Columns.Add("Variable", "Variable");
-                dataGridView3.Columns.Add("Value", "Value");
-                foreach (var item in cNF.GetAppropriateValue())
-                {
-                    dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
-                }
-            }
-            else
+            string step = "";
+            if (!RunDavidPutNam(ref step))
             {
                 MessageBox.Show("The proposition formula is not satisfiable!!!");
             }
-            MessageBox.Show(cNF.ShowStep(), "Algorithm:");
+            MessageBox.Show(step, "Algorithm:");
 
         }
 
@@ -361,19 +276,13 @@ namespace LPP
             }
 
             // Show NAND formula
-            Logic nand = null;
-            Thread thread = new Thread(() => Nandify(ref nand));
-            thread.Start();
+            Logic nand = infix.RootProposition.Nandify();
 
-            if (!thread.Join(11000))
-            {
-                nand = null;
-                thread.Abort();
-            }
             if (nand != null)
             {
                 TruthTable nandtable = nand.CreateTruthTable(infix.Variables);
                 hash_Code.Items.Add("NAND: " + nandtable.GetTruthTableHashCode());
+                //Show nand
                 //nand_ListBox.Items.Add(nand);
             }
         }
@@ -383,10 +292,217 @@ namespace LPP
         {
             Logic clone_root = ObjectExtension.CopyObject<Logic>(infix.RootProposition);
             Logic logic = clone_root.ConvertToCNF();
+            Console.WriteLine(logic);
             logic = logic.ApplyDistributiveLaw();
-            cnf = new CNF(logic);
+            string cnf_form = "[" + logic.GetCNFForm() + "]";
+            cnf = new CNF(cnf_form);
             cnf.Cnf_List_Variables = infix.Variables;
         }
 
+        private void randomPrefix_Click(object sender, EventArgs e)
+        {
+            random = new Random();
+            int i = 1;
+            var a = RandomPrefix(i);
+            inputprefix.Text = a.GetRandomPrefix();
+            ReadPrefix();
+            string step = "";
+            RunDavidPutNam(ref step);
+            genarate_graph.Enabled = true;
+            btSemanticTableaux.Enabled = true;
+        }
+
+        private void Tseitin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void test_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    random = new Random();
+                    int j = 1;
+                    var a = RandomPrefix(j);
+                    inputprefix.Text = a.GetRandomPrefix();
+                    ReadPrefix();
+                    string step = "";
+                    RunDavidPutNam(ref step);
+                    await Task.Delay(55000);
+                }
+                MessageBox.Show("The test is completed successfully!!!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        private Logic RandomPrefix(int i)
+        {
+            int value = random.Next(1, 100);
+            int max = range * i;
+            int avgrange = (100 - max) / 7;
+            if (value>=1 && value< max)
+            {
+                int a = random.Next(0, 4);
+                string character = ((char)(((int)'A') + a)).ToString();
+                return new Variable(character);
+            }
+            else if (value >= max && value < max + avgrange)
+            {
+                Logic logic = new BiImplication();
+                i++;
+                logic.LeftOperand = RandomPrefix(i);
+                logic.RightOperand = RandomPrefix(i);
+                return logic;
+            }
+            else if (value>= max+avgrange && value<max+avgrange*2)
+            {
+                Logic logic = new Conjunction();
+                i++;
+                logic.LeftOperand = RandomPrefix(i);
+                logic.RightOperand = RandomPrefix(i);
+                return logic;
+            }
+            else if (value >= max + avgrange*2 && value < max + avgrange * 3)
+            {
+                Logic logic = new Disjunction();
+                i++;
+                logic.LeftOperand = RandomPrefix(i);
+                logic.RightOperand = RandomPrefix(i);
+                return logic;
+            }
+            else if (value >= max + avgrange * 3 && value < max + avgrange * 4)
+            {
+                Logic logic = new Implication();
+                i++;
+                logic.LeftOperand = RandomPrefix(i);
+                logic.RightOperand = RandomPrefix(i);
+                return logic;
+            }
+            else if (value >= max + avgrange * 4 && value < max + avgrange * 5)
+            {
+                Logic logic = new Negation();
+                i++;
+                logic.LeftOperand = RandomPrefix(i);
+                return logic;
+            }
+            else if (value >= max + avgrange * 5 && value < max + avgrange * 6)
+            {
+                Logic logic = new NotAnd();
+                i++;
+                logic.LeftOperand = RandomPrefix(i);
+                logic.RightOperand = RandomPrefix(i);
+                return logic;
+            }
+            else if (value >= max + avgrange * 6 && value < max + (avgrange * 13/2))
+            {
+                return new False();
+            }
+            else
+            {
+                return new True();
+            }
+        }
+        
+        private void ReadPrefix()
+        {
+            ClearForm();
+            List<string> testPrefixAndresults = new List<string>();
+            string input = "";
+            for (int i = 0; i < inputprefix.Lines.Length; i++)
+            {
+                input += inputprefix.Lines[i];
+            }
+            input = input.Replace(" ", "");
+            if (input[0] == '[')
+            {
+                cNF = new CNF(input);
+                infix = new Formula();
+                //Convert CNF to Logic
+                infix.RootProposition = cNF.ConvertToLogic();
+                if (infix.RootProposition != null)
+                {
+                    infix_listBox.Items.Add(infix.RootProposition);
+                    infix.Variables = cNF.Cnf_List_Variables;
+                    ShowPropositionFormula();
+                }
+                //Show CNF
+                Cnf_listBox.Items.Add(cNF.ToString());
+                cnf_Graph.Enabled = true;
+                David_Putnam.Enabled = true;
+            }
+            else
+            {
+                infix = new Formula(input);
+                infix_listBox.Items.Add(infix.RootProposition);
+                if (!infix.IsPredicate)
+                {
+                    ShowPropositionFormula();
+                    //Show CNF
+                    cNF = null;
+                    Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
+                    thread2.Start();
+
+                    if (!thread2.Join(55000))
+                    {
+                        cNF = null;
+                        thread2.Abort();
+                    }
+                    if (cNF != null)
+                    {
+                        Cnf_listBox.Items.Add(cNF.ToString());
+                        cnf_Graph.Enabled = true;
+                        David_Putnam.Enabled = true;
+                    }
+                }
+                else
+                {
+                    cnf_Graph.Enabled = false;
+                    David_Putnam.Enabled = false;
+                    // Show bound variables;
+                    foreach (Variable variable in infix.BoundVariables)
+                    {
+                        listBoxBoundVariables.Items.Add(variable);
+                    }
+
+                    // Show unbound variables
+                    List<Variable> unboundVariables = infix.Variables.Except(infix.BoundVariables).ToList();
+                    unboundVariables.Sort();
+                    foreach (Variable variable in unboundVariables)
+                    {
+                        listBoxUnboundVariables.Items.Add(variable);
+                    }
+                }
+            }
+            //Print TESTED prefix
+            testPrefixAndresults.Add(inputprefix.Text);
+            PrintFormula(testPrefixAndresults);
+        }
+        
+        private bool RunDavidPutNam(ref string step)
+        {
+            dataGridView3.Columns.Clear();
+            dataGridView3.Rows.Clear();
+            CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
+            cNF.DavisPutnan(clone_cnf);
+            if (!cNF.GetHasJanusValue())
+            {
+                dataGridView3.Columns.Add("Variable", "Variable");
+                dataGridView3.Columns.Add("Value", "Value");
+                foreach (var item in cNF.GetAppropriateValue())
+                {
+                    dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
+                }
+                step = cNF.ShowStep();
+                return true;
+            }
+            step = cNF.ShowStep();
+            return false;
+        }
     }
 }

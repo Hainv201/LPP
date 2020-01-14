@@ -427,36 +427,36 @@ namespace LPP
 
         public string CreateTableauxTree(ref int index, int preIndex = 0)
         {
-            string graph = Environment.NewLine+$"node{index} [label = \"{ToString()} [{ String.Join(", ", Active_Variables)}]\"]";
+            string tableauxgraph = Environment.NewLine+$"node{index} [label = \"{ToString()} [{ String.Join(", ", Active_Variables)}]\"]";
             if (preIndex != 0)
             {
-                graph += Environment.NewLine+$"node{preIndex} -- node{index}";
+                tableauxgraph += Environment.NewLine+$"node{preIndex} -- node{index}";
             }
             if (this.left_Child != null && this.right_Child != null)
             {
                 int pre = index;
                 index++;
-                graph += this.left_Child.CreateTableauxTree(ref index, pre);
-                graph += this.right_Child.CreateTableauxTree(ref index, pre);
-                return graph;
+                tableauxgraph += this.left_Child.CreateTableauxTree(ref index, pre);
+                tableauxgraph += this.right_Child.CreateTableauxTree(ref index, pre);
+                return tableauxgraph;
             }
             else if (this.left_Child != null && this.right_Child == null)
             {
                 int pre = index;
                 index++;
-                graph += this.left_Child.CreateTableauxTree(ref index, pre);
-                return graph;
+                tableauxgraph += this.left_Child.CreateTableauxTree(ref index, pre);
+                return tableauxgraph;
             }
             else if (IsClosed())
             {
                 int pre = index;
                 index++;
-                graph += Environment.NewLine+$"node{index} [ label = \"X\" ]";
-                graph += Environment.NewLine+$"node{pre} -- node{index}";
+                tableauxgraph += Environment.NewLine+$"node{index} [ label = \"X\" ]";
+                tableauxgraph += Environment.NewLine+$"node{pre} -- node{index}";
             }
 
             index++;
-            return graph;
+            return tableauxgraph;
         }
 
         public bool GetResult()
