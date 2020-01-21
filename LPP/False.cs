@@ -12,7 +12,10 @@ namespace LPP
         public False():base()
         {
         }
-
+        public override bool IsLeaf
+        {
+            get { return true; }
+        }
         public override string GetLabel()
         {
            return "False";

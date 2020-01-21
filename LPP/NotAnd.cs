@@ -12,7 +12,10 @@ namespace LPP
         public NotAnd():base()
         {
         }
-
+        public override bool IsLeaf
+        {
+            get { return false; }
+        }
         public override string GetLabel()
         {
             return "%";
@@ -66,6 +69,19 @@ namespace LPP
         public override string GetRandomPrefix()
         {
             return $"%({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
+        }
+
+        public override Logic GetTseitinSubLogic()
+        {
+            BiImplication biImplication = new BiImplication();
+            biImplication.LeftOperand = this.TseitinVariable;
+
+            NotAnd notAnd = new NotAnd();
+            notAnd.LeftOperand = this.LeftOperand.TseitinVariable;
+            notAnd.RightOperand = this.RightOperand.TseitinVariable;
+            biImplication.RightOperand = notAnd;
+            Console.WriteLine(biImplication);
+            return biImplication;
         }
     }
 }

@@ -11,6 +11,8 @@ namespace LPP
     {
         public Logic LeftOperand { get; set; }
         public Logic RightOperand { get; set; }
+        public Logic TseitinVariable { get; private set; }
+        public virtual bool IsLeaf { get; private set; }
         public virtual int TruthValue { get; private set; }
 
         public Logic()
@@ -103,6 +105,82 @@ namespace LPP
         public virtual string GetCNFForm()
         {
             return this.GetCNFForm();
+        }
+
+        public virtual Logic GetTseitinSubLogic()
+        {
+            return this;
+        }
+
+        public void GetTseitinVariable(ref char tsetinchar, List<Variable> variables)
+        {
+            if (!this.IsLeaf)
+            {
+                var v = new Variable(tsetinchar.ToString());
+                this.TseitinVariable = v;
+                variables.Add(v);
+                tsetinchar++;
+                if (this.LeftOperand != null)
+                {
+                    this.LeftOperand.GetTseitinVariable(ref tsetinchar,variables);
+                }
+                if (this.RightOperand != null)
+                {
+                    this.RightOperand.GetTseitinVariable(ref tsetinchar,variables);
+                }
+            }
+            else
+            {
+                this.TseitinVariable = this;
+            }
+        }
+
+        public virtual Logic GetTseitinTranformation()
+        {
+            if(this.LeftOperand != null && this.RightOperand != null)
+            {
+                if (this.LeftOperand.ToString() != this.LeftOperand.TseitinVariable.ToString() && this.RightOperand.ToString() != this.RightOperand.TseitinVariable.ToString())
+                {
+                    Conjunction c1 = new Conjunction();
+                    c1.LeftOperand = this.GetTseitinSubLogic();
+                    Conjunction c2 = new Conjunction();
+                    c2.LeftOperand = this.LeftOperand.GetTseitinTranformation();
+                    c2.RightOperand = this.RightOperand.GetTseitinTranformation();
+
+                    c1.RightOperand = c2;
+                    return c1;
+                }
+                else if (this.LeftOperand.ToString() != this.LeftOperand.TseitinVariable.ToString() && this.RightOperand.ToString() == this.RightOperand.TseitinVariable.ToString())
+                {
+                    Conjunction c1 = new Conjunction();
+                    c1.LeftOperand = this.GetTseitinSubLogic();
+                    c1.RightOperand = this.LeftOperand.GetTseitinTranformation();
+                    return c1;
+                }
+                else if (this.LeftOperand.ToString() == this.LeftOperand.TseitinVariable.ToString() && this.RightOperand.ToString() != this.RightOperand.TseitinVariable.ToString())
+                {
+                    Conjunction c1 = new Conjunction();
+                    c1.LeftOperand = this.GetTseitinSubLogic();
+                    c1.RightOperand = this.RightOperand.GetTseitinTranformation();
+                    return c1;
+                }
+                return this.GetTseitinSubLogic();
+            }
+            else if (this is Negation)
+            {
+                if (this.LeftOperand.ToString() != this.LeftOperand.TseitinVariable.ToString())
+                {
+                    Conjunction c1 = new Conjunction();
+                    c1.LeftOperand = this.GetTseitinSubLogic();
+                    c1.RightOperand = this.LeftOperand.GetTseitinTranformation();
+                    return c1;
+                }
+                return this.GetTseitinSubLogic();
+            }
+            else
+            {
+                return this.GetTseitinSubLogic();
+            }
         }
     }
 }

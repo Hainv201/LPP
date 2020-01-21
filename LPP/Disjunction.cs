@@ -12,7 +12,10 @@ namespace LPP
         public Disjunction():base()
         {   
         }
-
+        public override bool IsLeaf
+        {
+            get { return false; }
+        }
         public override string GetLabel()
         {
             return "|";
@@ -153,6 +156,19 @@ namespace LPP
         public override string GetCNFForm()
         {
             return LeftOperand.GetCNFForm() + RightOperand.GetCNFForm();
+        }
+
+        public override Logic GetTseitinSubLogic()
+        {
+            BiImplication biImplication = new BiImplication();
+            biImplication.LeftOperand = this.TseitinVariable;
+
+            Disjunction disjunction = new Disjunction();
+            disjunction.LeftOperand = this.LeftOperand.TseitinVariable;
+            disjunction.RightOperand = this.RightOperand.TseitinVariable;
+            biImplication.RightOperand = disjunction;
+            Console.WriteLine(biImplication);
+            return biImplication;
         }
     }
 }

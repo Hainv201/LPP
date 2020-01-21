@@ -6,7 +6,10 @@ namespace LPP
     public class Variable : Logic, IComparable<Variable>
     {
         public string Letter { get; set; }
-
+        public override bool IsLeaf
+        {
+            get { return true; }
+        }
         public Variable(string letter)
         {
             Letter = letter;

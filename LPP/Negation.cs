@@ -12,7 +12,10 @@ namespace LPP
         public Negation():base()
         {
         }
-
+        public override bool IsLeaf
+        {
+            get { return false; }
+        }
         public override string GetLabel()
         {
             return "~";
@@ -110,6 +113,18 @@ namespace LPP
         public override string GetCNFForm()
         {
             return LeftOperand.ToString().ToLower();
+        }
+
+        public override Logic GetTseitinSubLogic()
+        {
+            BiImplication biImplication = new BiImplication();
+            biImplication.LeftOperand = this.TseitinVariable;
+
+            Negation negation = new Negation();
+            negation.LeftOperand = this.LeftOperand.TseitinVariable;
+            biImplication.RightOperand = negation;
+            Console.WriteLine(biImplication);
+            return biImplication;
         }
     }
 }

@@ -12,7 +12,10 @@ namespace LPP
         public Implication():base()
         {
         }
-
+        public override bool IsLeaf
+        {
+            get { return false; }
+        }
         public override string GetLabel()
         {
             return ">";
@@ -67,6 +70,19 @@ namespace LPP
         public override string GetRandomPrefix()
         {
             return $">({LeftOperand.GetRandomPrefix()},{RightOperand.GetRandomPrefix()})";
+        }
+
+        public override Logic GetTseitinSubLogic()
+        {
+            BiImplication biImplication = new BiImplication();
+            biImplication.LeftOperand = this.TseitinVariable;
+
+            Implication implication = new Implication();
+            implication.LeftOperand = this.LeftOperand.TseitinVariable;
+            implication.RightOperand = this.RightOperand.TseitinVariable;
+            biImplication.RightOperand = implication;
+            Console.WriteLine(biImplication);
+            return biImplication;
         }
     }
 }

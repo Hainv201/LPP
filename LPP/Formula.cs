@@ -232,5 +232,14 @@ namespace LPP
             }
             return true;
         }
+
+        public Logic GetTseitin()
+        {
+            Conjunction conjunction = new Conjunction();
+            conjunction.LeftOperand = RootProposition.TseitinVariable;
+            conjunction.RightOperand = RootProposition.GetTseitinTranformation();
+            Console.WriteLine(conjunction);
+            return conjunction;
+        }
     }
 }

@@ -67,10 +67,15 @@
             this.test = new System.Windows.Forms.Button();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tseitin_listBox = new System.Windows.Forms.ListBox();
+            this.dataGridView5 = new System.Windows.Forms.DataGridView();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             this.SuspendLayout();
             // 
             // labelUnboundVariables
@@ -97,7 +102,7 @@
             // 
             // replace
             // 
-            this.replace.Location = new System.Drawing.Point(876, 363);
+            this.replace.Location = new System.Drawing.Point(877, 362);
             this.replace.Name = "replace";
             this.replace.Size = new System.Drawing.Size(75, 23);
             this.replace.TabIndex = 55;
@@ -115,7 +120,7 @@
             // listBoxUnboundVariables
             // 
             this.listBoxUnboundVariables.FormattingEnabled = true;
-            this.listBoxUnboundVariables.Location = new System.Drawing.Point(626, 252);
+            this.listBoxUnboundVariables.Location = new System.Drawing.Point(627, 252);
             this.listBoxUnboundVariables.Name = "listBoxUnboundVariables";
             this.listBoxUnboundVariables.Size = new System.Drawing.Size(325, 95);
             this.listBoxUnboundVariables.TabIndex = 53;
@@ -151,24 +156,24 @@
             // 
             this.dataGridView2.AllowUserToOrderColumns = true;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(248, 418);
+            this.dataGridView2.Location = new System.Drawing.Point(211, 450);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(230, 215);
+            this.dataGridView2.Size = new System.Drawing.Size(190, 215);
             this.dataGridView2.TabIndex = 49;
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 418);
+            this.dataGridView1.Location = new System.Drawing.Point(15, 450);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(230, 215);
+            this.dataGridView1.Size = new System.Drawing.Size(190, 215);
             this.dataGridView1.TabIndex = 48;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(245, 402);
+            this.label8.Location = new System.Drawing.Point(208, 434);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(81, 13);
             this.label8.TabIndex = 47;
@@ -195,7 +200,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 402);
+            this.label6.Location = new System.Drawing.Point(12, 434);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(62, 13);
             this.label6.TabIndex = 44;
@@ -334,7 +339,7 @@
             this.Cnf_listBox.HorizontalScrollbar = true;
             this.Cnf_listBox.Location = new System.Drawing.Point(105, 329);
             this.Cnf_listBox.Name = "Cnf_listBox";
-            this.Cnf_listBox.Size = new System.Drawing.Size(515, 56);
+            this.Cnf_listBox.Size = new System.Drawing.Size(515, 43);
             this.Cnf_listBox.TabIndex = 59;
             // 
             // label9
@@ -372,15 +377,15 @@
             // 
             this.dataGridView3.AllowUserToOrderColumns = true;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(720, 418);
+            this.dataGridView3.Location = new System.Drawing.Point(655, 450);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(235, 215);
+            this.dataGridView3.Size = new System.Drawing.Size(135, 215);
             this.dataGridView3.TabIndex = 64;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(717, 402);
+            this.label10.Location = new System.Drawing.Point(652, 434);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(96, 13);
             this.label10.TabIndex = 65;
@@ -398,6 +403,7 @@
             // 
             // Tseitin
             // 
+            this.Tseitin.Enabled = false;
             this.Tseitin.Location = new System.Drawing.Point(844, 46);
             this.Tseitin.Name = "Tseitin";
             this.Tseitin.Size = new System.Drawing.Size(107, 25);
@@ -408,7 +414,7 @@
             // 
             // test
             // 
-            this.test.Location = new System.Drawing.Point(844, 81);
+            this.test.Location = new System.Drawing.Point(845, 81);
             this.test.Name = "test";
             this.test.Size = new System.Drawing.Size(107, 25);
             this.test.TabIndex = 68;
@@ -420,25 +426,65 @@
             // 
             this.dataGridView4.AllowUserToOrderColumns = true;
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.Location = new System.Drawing.Point(484, 418);
+            this.dataGridView4.Location = new System.Drawing.Point(407, 450);
             this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.Size = new System.Drawing.Size(230, 215);
+            this.dataGridView4.Size = new System.Drawing.Size(242, 215);
             this.dataGridView4.TabIndex = 69;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(481, 402);
+            this.label11.Location = new System.Drawing.Point(404, 434);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 13);
             this.label11.TabIndex = 70;
             this.label11.Text = "Tseitin Table";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(12, 390);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(41, 13);
+            this.label12.TabIndex = 71;
+            this.label12.Text = "Tseitin:";
+            // 
+            // tseitin_listBox
+            // 
+            this.tseitin_listBox.FormattingEnabled = true;
+            this.tseitin_listBox.HorizontalScrollbar = true;
+            this.tseitin_listBox.Location = new System.Drawing.Point(105, 378);
+            this.tseitin_listBox.Name = "tseitin_listBox";
+            this.tseitin_listBox.Size = new System.Drawing.Size(515, 43);
+            this.tseitin_listBox.TabIndex = 72;
+            // 
+            // dataGridView5
+            // 
+            this.dataGridView5.AllowUserToOrderColumns = true;
+            this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView5.Location = new System.Drawing.Point(796, 450);
+            this.dataGridView5.Name = "dataGridView5";
+            this.dataGridView5.Size = new System.Drawing.Size(155, 215);
+            this.dataGridView5.TabIndex = 73;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(793, 434);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(130, 13);
+            this.label13.TabIndex = 74;
+            this.label13.Text = "Tseitin Appropriate Values";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(964, 666);
+            this.ClientSize = new System.Drawing.Size(964, 715);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.dataGridView5);
+            this.Controls.Add(this.tseitin_listBox);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.dataGridView4);
             this.Controls.Add(this.test);
@@ -484,6 +530,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,6 +577,10 @@
         private System.Windows.Forms.Button test;
         private System.Windows.Forms.DataGridView dataGridView4;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ListBox tseitin_listBox;
+        private System.Windows.Forms.DataGridView dataGridView5;
+        private System.Windows.Forms.Label label13;
     }
 }
 

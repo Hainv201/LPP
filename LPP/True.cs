@@ -8,7 +8,10 @@ namespace LPP
         public True()
         {
         }
-
+        public override bool IsLeaf
+        {
+            get { return true; }
+        }
         public override string GetLabel()
         {
             return "True";

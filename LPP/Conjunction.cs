@@ -12,7 +12,10 @@ namespace LPP
         public Conjunction():base()
         {
         }
-
+        public override bool IsLeaf
+        {
+            get { return false; }
+        }
         public override string GetLabel()
         {
             return "&";
@@ -96,6 +99,18 @@ namespace LPP
         public override string GetCNFForm()
         {
             return LeftOperand.GetCNFForm() + "," + RightOperand.GetCNFForm();
+        }
+        public override Logic GetTseitinSubLogic()
+        {
+            BiImplication biImplication = new BiImplication();
+            biImplication.LeftOperand = this.TseitinVariable;
+
+            Conjunction conjunction = new Conjunction();
+            conjunction.LeftOperand = this.LeftOperand.TseitinVariable;
+            conjunction.RightOperand = this.RightOperand.TseitinVariable;
+            biImplication.RightOperand = conjunction;
+            Console.WriteLine(biImplication);
+            return biImplication;
         }
     }
 }

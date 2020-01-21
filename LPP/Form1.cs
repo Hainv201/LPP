@@ -93,9 +93,14 @@ namespace LPP
             dataGridView2.Columns.Clear();
             dataGridView3.Rows.Clear();
             dataGridView3.Columns.Clear();
+            dataGridView4.Rows.Clear();
+            dataGridView4.Columns.Clear();
+            dataGridView5.Rows.Clear();
+            dataGridView5.Columns.Clear();
             listBoxBoundVariables.Items.Clear();
             listBoxUnboundVariables.Items.Clear();
             Cnf_listBox.Items.Clear();
+            tseitin_listBox.Items.Clear();
             textBoxReplaceVariable.Text = "";
         }
 
@@ -106,6 +111,7 @@ namespace LPP
             genarate_graph.Enabled = false;
             cnf_Graph.Enabled = false;
             David_Putnam.Enabled = false;
+            Tseitin.Enabled = false;
             ClearForm();
         }
 
@@ -201,7 +207,7 @@ namespace LPP
         private void David_Putnam_Click(object sender, EventArgs e)
         {
             string step = "";
-            if (!RunDavidPutNam(ref step))
+            if (!RunDavidPutNam(ref step,cNF,dataGridView3))
             {
                 MessageBox.Show("The proposition formula is not satisfiable!!!");
             }
@@ -222,7 +228,7 @@ namespace LPP
             {
                 dataGridView1.Columns.Add(variable.ToString(), variable.ToString());
             }
-            dataGridView1.Columns.Add("R", "R");
+            dataGridView1.Columns.Add("Result", "Result");
             foreach (string[] row in table.Data)
             {
                 dataGridView1.Rows.Add(row);
@@ -232,7 +238,6 @@ namespace LPP
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            dataGridView1.Columns[dataGridView1.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             // Show simplified truth table
             TruthTable simplifiedTable = table.Simplify();
@@ -240,7 +245,7 @@ namespace LPP
             {
                 dataGridView2.Columns.Add(variable.ToString(), variable.ToString());
             }
-            dataGridView2.Columns.Add("R", "R");
+            dataGridView2.Columns.Add("Result", "Result");
             foreach (string[] row in simplifiedTable.Data)
             {
                 dataGridView2.Rows.Add(row);
@@ -251,7 +256,6 @@ namespace LPP
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            dataGridView2.Columns[dataGridView2.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             // Hash Code
             hash_Code.Items.Add("Infix: " + table.GetTruthTableHashCode());
@@ -288,15 +292,15 @@ namespace LPP
         }
 
         // Convert Proposition formula to CNF
-        private void ConvertCNF(ref CNF cnf)
+        private void ConvertCNF(ref CNF cnf, Logic logicRoot, List<Variable> variables)
         {
-            Logic clone_root = ObjectExtension.CopyObject<Logic>(infix.RootProposition);
+            Logic clone_root = ObjectExtension.CopyObject<Logic>(logicRoot);
             Logic logic = clone_root.ConvertToCNF();
             Console.WriteLine(logic);
             logic = logic.ApplyDistributiveLaw();
             string cnf_form = "[" + logic.GetCNFForm() + "]";
             cnf = new CNF(cnf_form);
-            cnf.Cnf_List_Variables = infix.Variables;
+            cnf.Cnf_List_Variables = variables;
         }
 
         private void randomPrefix_Click(object sender, EventArgs e)
@@ -307,14 +311,65 @@ namespace LPP
             inputprefix.Text = a.GetRandomPrefix();
             ReadPrefix();
             string step = "";
-            RunDavidPutNam(ref step);
+            RunDavidPutNam(ref step,cNF,dataGridView3);
             genarate_graph.Enabled = true;
             btSemanticTableaux.Enabled = true;
         }
 
         private void Tseitin_Click(object sender, EventArgs e)
         {
+            bool tseitin_HasJanus = false;
+            string step = "";
+            TseitinEvent(ref step, ref tseitin_HasJanus);
+            if (!tseitin_HasJanus)
+            {
+                MessageBox.Show("The proposition formula is not satisfiable!!!");
+            }
+            MessageBox.Show(step, "Algorithm:");
+        }
 
+        private void TseitinEvent(ref string step, ref bool tseitin_HasJanus)
+        {
+            tseitin_listBox.Items.Clear();
+            char tseitin = 'K';
+            List<Variable> Tseitin_Variables = infix.Variables.ToList();
+            infix.RootProposition.GetTseitinVariable(ref tseitin, Tseitin_Variables);
+            var tsetinlogic = infix.GetTseitin();
+            tseitin_listBox.Items.Add(tsetinlogic);
+            // Show truth table
+            TruthTable table = tsetinlogic.CreateTruthTable(Tseitin_Variables);
+
+            dataGridView4.Rows.Clear();
+            dataGridView4.Columns.Clear();
+            foreach (Variable variable in Tseitin_Variables)
+            {
+                dataGridView4.Columns.Add(variable.ToString(), variable.ToString());
+            }
+            dataGridView4.Columns.Add("Result", "Result");
+            foreach (string[] row in table.Data)
+            {
+                dataGridView4.Rows.Add(row);
+            }
+            foreach (DataGridViewColumn col in dataGridView4.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            //Show CNF
+            CNF cnf = null;
+            Thread thread2 = new Thread(() => ConvertCNF(ref cnf, tsetinlogic, Tseitin_Variables));
+            thread2.Start();
+
+            if (!thread2.Join(55000))
+            {
+                cnf = null;
+                thread2.Abort();
+            }
+            if (cnf != null)
+            {
+                Cnf_listBox.Items.Add(cnf.ToString());
+                tseitin_HasJanus = RunDavidPutNam(ref step, cnf, dataGridView5);
+            }
         }
 
         private async void test_Click(object sender, EventArgs e)
@@ -328,8 +383,11 @@ namespace LPP
                     var a = RandomPrefix(j);
                     inputprefix.Text = a.GetRandomPrefix();
                     ReadPrefix();
+                    string tseitin_step = "";
+                    bool tseitin_davidputnam = false;
+                    TseitinEvent(ref tseitin_step,ref tseitin_davidputnam);
                     string step = "";
-                    RunDavidPutNam(ref step);
+                    RunDavidPutNam(ref step,cNF,dataGridView3);
                     await Task.Delay(55000);
                 }
                 MessageBox.Show("The test is completed successfully!!!");
@@ -445,7 +503,7 @@ namespace LPP
                     ShowPropositionFormula();
                     //Show CNF
                     cNF = null;
-                    Thread thread2 = new Thread(() => ConvertCNF(ref cNF));
+                    Thread thread2 = new Thread(() => ConvertCNF(ref cNF, infix.RootProposition, infix.Variables));
                     thread2.Start();
 
                     if (!thread2.Join(55000))
@@ -479,29 +537,35 @@ namespace LPP
                     }
                 }
             }
+            Tseitin.Enabled = true;
             //Print TESTED prefix
             testPrefixAndresults.Add(inputprefix.Text);
             PrintFormula(testPrefixAndresults);
         }
         
-        private bool RunDavidPutNam(ref string step)
+        private bool RunDavidPutNam(ref string step, CNF cnf, DataGridView dataGridView)
         {
-            dataGridView3.Columns.Clear();
-            dataGridView3.Rows.Clear();
-            CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cNF);
-            cNF.DavisPutnan(clone_cnf);
-            if (!cNF.GetHasJanusValue())
+            dataGridView.Columns.Clear();
+            dataGridView.Rows.Clear();
+            CNF clone_cnf = ObjectExtension.CopyObject<CNF>(cnf);
+            cnf.DavisPutnan(clone_cnf);
+            if (!cnf.GetHasJanusValue())
             {
-                dataGridView3.Columns.Add("Variable", "Variable");
-                dataGridView3.Columns.Add("Value", "Value");
-                foreach (var item in cNF.GetAppropriateValue())
+                dataGridView.Columns.Add("Variable", "Variable");
+                dataGridView.Columns.Add("Value", "Value");
+                foreach (var item in cnf.GetAppropriateValue())
                 {
-                    dataGridView3.Rows.Add(item.Key.ToUpper(), item.Value);
+                    dataGridView.Rows.Add(item.Key.ToUpper(), item.Value);
                 }
-                step = cNF.ShowStep();
+                foreach (DataGridViewColumn col in dataGridView.Columns)
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                    col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+                step = cnf.ShowStep();
                 return true;
             }
-            step = cNF.ShowStep();
+            step = cnf.ShowStep();
             return false;
         }
     }
